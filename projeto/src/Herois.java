@@ -4,7 +4,7 @@ public class Herois implements Acoes,Runnable{
     private int velocidade;
     private int inteligencia;
     private int defesa;
-    public int xp;
+    private int xp;
     private int xpProximoNivel;
     private boolean acordado;
     private boolean morto;

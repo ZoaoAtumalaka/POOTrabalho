@@ -101,9 +101,7 @@
 //     metodos
 //         passarDia-vai multiplicar a dificuldade de todas as missoes em 1.1;
 //         darXp- vai dar um return do xpDado
-//         executarMissao- aqui onde vai ter a divisao de cenarios e a aleatoriedade, vai chamar o metodo executarMissa da equipe, se retornar um array com um unico item falha e retorna false e vai pegar esse culpado e setar em culpadoFalha, se retornar maior vai passar pelo calculo de sucessao se passar retorna true;
-//         run- vai começar o timer de 30 segundos se o timer concluir e não ter nenhuma equipe em equipeEnviada ela retorna false, se tiver vai rodar o timer de tempoDeExecucao apos terminar vai chamar executarMissao se retornar false vai chamar o metodo falha em equipe, no final de tudo vai retornar o que veio de resultado de executar missao;
-//         getResultado- vai pegar quem falhou na missao chamando o metodo motivoFalha e retornar;
+//         executarMissao-vai começar o timer de 30 segundos e a cada segundo verificar o array de equipe enviada se estiver vazia vai setar o culpadoFalha com um numero unico que o front vai entender que foi por falta de heroi enviados, se não estiver vazia vai pra proxima parte/ vai rodar o timer de ida atualizando a cada segundo pelo callback que retorna o horario pro front/ mesma coisa de antes so que pro horario de execução/aqui onde vai ter a divisao de cenarios e a aleatoriedade, vai chamar o metodo executarMissa da equipe, se retornar um array com um unico item falha e retorna false e vai pegar esse culpado e setar em culpadoFalha, se retornar maior vai passar pelo calculo de sucessao se passar retorna true/ se o array vier com um unico numero ou der false vai chamar matar do objeto de equipe;
 //         motivoFalha- vai retornar culpadoFalha;
 // class Main
 //     main-while(vai chamar threadDemissao que vai criar uma thread e começar um tempo aleatorio para criar outro thread, antes de criar o novo thread ele vai verificar se a quantidade de missoes executadas ja não é suficiente se for vai chamar o metodo passarDia e vai mostrar que o player passou de dia)
