@@ -1,3 +1,104 @@
-public class Herois {
-    
+public class Herois implements Acoes,Runnable{
+    private String  nome;
+    private int forca;
+    private int velocidade;
+    private int inteligencia;
+    private int defesa;
+    public int xp;
+    private int xpProximoNivel;
+    private boolean acordado;
+    private boolean morto;
+    private int tempoDeDescanso;
+
+    public Herois(String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDeDescanso) {
+        this.nome = nome;
+        this.forca = forca;
+        this.velocidade = velocidade;
+        this.inteligencia = inteligencia;
+        this.defesa = defesa;
+        this.tempoDeDescanso = tempoDeDescanso;
+        this.xp=0;
+        this.xpProximoNivel=1000;
+        this.acordado=true;
+        this.morto=false;
+    }
+
+    @Override
+    public boolean verificarVida(){
+        return this.morto;
+    }
+    @Override
+    public int[] executarMissao(){
+        int[] atributos= {velocidade,inteligencia,defesa,forca};
+        return atributos;
+    }
+    @Override
+    public void matar(){
+        this.morto=true;
+    }
+    @Override
+    public void reanimar(){
+        this.morto=false;
+        this.acordado=true;
+    }
+    @Override
+    public boolean darXp(int xp){
+        if (this.xp>=this.xpProximoNivel){
+            this.xp=0;
+            this.xpProximoNivel*=1.1;
+            return true;
+        }else {
+            this.xp+=xp;
+            return false;
+        }
+    }
+    @Override
+    public void evoluir(String atributo){
+        if (atributo.equals("Forca")){
+            this.forca*=1.1;
+        }else if(atributo.equals("Velocidade")){
+            this.velocidade*=1.1;
+        }else if (atributo.equals("Defesa")){
+            this.defesa*=1.1;
+        }else if (atributo.equals("Inteligencia")){
+            this.inteligencia*=1.1;
+        }
+    }
+    @Override
+    public void descansar(){
+        try{
+            this.acordado=false;
+            Thread.sleep(this.tempoDeDescanso);
+            this.acordado=true;
+        }catch (InterruptedException e){
+//            aqui da pra por o objeto de excessao que é minimo pro trabalho
+            System.out.println("Erro");
+        }
+    }
+    @Override
+    public void run(){
+        descansar();
+    }
+
 }
+// abstract class Herois implements Acoes
+//     atributos
+//         String nome
+//         int forca
+//         int velocidade
+//         int inteligencia
+//         int defesa
+//         int xp
+//         int xpProximoNivel
+//         boolean acordado
+//         boolean morto
+//         int tempoDeDescanso
+//     metodos
+//         verificarVida- retorna o que estiver em morto;
+//         executarMissao- vai retornar os atributos em array
+//         matar- vai setar o morto = true
+//         reanimar- vai setar o acordado = true e setar o morto = false;
+//         darXp- vai receber por parametro o xp da missao e verificar se e possivel evoluir se evoluir retorna true se não false;
+//         evoluirPersona- vai pegar o atributo que o user deseja evoluir e multiplicar por 1.1;
+//         descansar- vai chamar um timer com o tempo de descanso e setar o acordado para falso;
+//         run- vai chamar descansar
