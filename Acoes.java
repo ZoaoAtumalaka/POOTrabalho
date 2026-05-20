@@ -1,6 +1,6 @@
 package org.example;
 
-public interface Acoes {
+public interface Acoes  {
     abstract public void subirNivel(String atributoParaEvoluir);
     abstract public boolean receberXp(double xpRecebido);
     abstract public void descansar();
