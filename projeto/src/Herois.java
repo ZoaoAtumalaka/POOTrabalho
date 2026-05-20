@@ -27,15 +27,18 @@ public class Herois implements Acoes,Runnable{
     public boolean verificarVida(){
         return this.morto;
     }
+
     @Override
     public int[] executarMissao(){
         int[] atributos= {velocidade,inteligencia,defesa,forca};
         return atributos;
     }
+
     @Override
     public void matar(){
         this.morto=true;
     }
+
     @Override
     public void reanimar(){
         this.morto=false;
@@ -81,24 +84,3 @@ public class Herois implements Acoes,Runnable{
     }
 
 }
-// abstract class Herois implements Acoes
-//     atributos
-//         String nome
-//         int forca
-//         int velocidade
-//         int inteligencia
-//         int defesa
-//         int xp
-//         int xpProximoNivel
-//         boolean acordado
-//         boolean morto
-//         int tempoDeDescanso
-//     metodos
-//         verificarVida- retorna o que estiver em morto;
-//         executarMissao- vai retornar os atributos em array
-//         matar- vai setar o morto = true
-//         reanimar- vai setar o acordado = true e setar o morto = false;
-//         darXp- vai receber por parametro o xp da missao e verificar se e possivel evoluir se evoluir retorna true se não false;
-//         evoluirPersona- vai pegar o atributo que o user deseja evoluir e multiplicar por 1.1;
-//         descansar- vai chamar um timer com o tempo de descanso e setar o acordado para falso;
-//         run- vai chamar descansar

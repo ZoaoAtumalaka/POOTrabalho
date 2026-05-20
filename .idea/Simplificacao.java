@@ -73,22 +73,6 @@
 //         executarMissao- vai chamar executarMissao dos filhos e receber os atributos, se receber um array com 1 item so retorna o mesmo, caso receba um array com mais de 1 vai somar os atributos em um novo array e retornar ele
 //         falha- seta todos os herois como mortos;
 
-// class Cenario
-//     atributos
-//         String descricao
-//         int forcaExigida
-//         int velocidadeExigida
-//         int inteligenciaExigida
-//         int defesaExigida
-//         int tempoDeIda
-//         int tempoDeExecucao
-//         int quantidadeMembros
-//         int xpDado
-//     metodos
-//         getDescricao- vai retornar a descricao
-//         getAtributos- vai retornar um array com atributos
-//         getQuantidadeDeMembros- vai retornar a quantidade de membros
-
 // class Dias
 //     atributos
 //         ArrayList<Cenario> cenariosFaceis
@@ -103,6 +87,7 @@
 //         darXp- vai dar um return do xpDado
 //         executarMissao-vai começar o timer de 30 segundos e a cada segundo verificar o array de equipe enviada se estiver vazia vai setar o culpadoFalha com um numero unico que o front vai entender que foi por falta de heroi enviados, se não estiver vazia vai pra proxima parte/ vai rodar o timer de ida atualizando a cada segundo pelo callback que retorna o horario pro front/ mesma coisa de antes so que pro horario de execução/aqui onde vai ter a divisao de cenarios e a aleatoriedade, vai chamar o metodo executarMissa da equipe, se retornar um array com um unico item falha e retorna false e vai pegar esse culpado e setar em culpadoFalha, se retornar maior vai passar pelo calculo de sucessao se passar retorna true/ se o array vier com um unico numero ou der false vai chamar matar do objeto de equipe;
 //         motivoFalha- vai retornar culpadoFalha;
+
 // class Main
 //     main-while(vai chamar threadDemissao que vai criar uma thread e começar um tempo aleatorio para criar outro thread, antes de criar o novo thread ele vai verificar se a quantidade de missoes executadas ja não é suficiente se for vai chamar o metodo passarDia e vai mostrar que o player passou de dia)
 //     threadDeMissao-vai criar o painel de missao com a descricao atributos e quantidade de herois é nesse painel onde sera atualizado o timer pra encerrar por tempo, vai chamar o run de dias e aguardar o player selecionar quem vai mandar,vai aguardar o run responder se retornar true vai dar o xp da missao pros herois, se der false vai pegar o resultado e mostrar no painel pq a missao falhou, se aglum evoluir vai atualizar o painel pro de evolução, timer de 5 segundos e fecha o painel
