@@ -1,4 +1,4 @@
-package org.example;
+package org.examples;
 
 public interface Acoes  {
     abstract public void subirNivel(String atributoParaEvoluir);

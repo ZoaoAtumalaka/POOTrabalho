@@ -1,4 +1,4 @@
-package org.example;
+package org.examples;
 
 public abstract class Herois implements Acoes{
     private double forca;
