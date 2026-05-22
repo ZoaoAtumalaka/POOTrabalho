@@ -13,8 +13,8 @@ public class BlackNoir extends Herois {
             return super.executarMissao();
         }
         else {
-            int[] atributos = {4};
-            return  atributos;
+            int[] erro = {4};
+            return  erro;
         }
     }
 

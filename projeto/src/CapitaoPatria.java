@@ -15,8 +15,8 @@ class CapitaoPatria extends Herois {
             this.sanidade -= 33;
             return super.executarMissao();
         } else {
-            int[] atributos = {1};
-            return atributos;
+            int[] erro = {1};
+            return erro;
         }
 
     }

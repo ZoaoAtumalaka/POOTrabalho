@@ -14,8 +14,8 @@ public class TremBala extends Herois{
         }
 
         else {
-            int[] atributos = {5};
-            return atributos;
+            int[] erro = {5};
+            return erro;
         }
     }
 

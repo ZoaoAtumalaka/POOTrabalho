@@ -2,10 +2,10 @@ public class Cenarios {
     // Cenario = missão
     // ATRIBUTOS
     private String descricao;
-    private int forcaExigida;
-    private int velociddadeExigida;
-    private int inteligenciaExigida;
-    private int defesaExigida;
+    private double forcaExigida;
+    private double velociddadeExigida;
+    private double inteligenciaExigida;
+    private double defesaExigida;
     private int tempoDeIda;
     private int tempoDeExecucao;
     private int quantidadeMemnbros;
@@ -25,18 +25,29 @@ public class Cenarios {
         this.xpDado = xpDado;
     }
 
+    public void aumentardificuldade(){
+        this.forcaExigida = forcaExigida * 1.1;
+        this.velociddadeExigida = velociddadeExigida * 1.1;
+        this.inteligenciaExigida = inteligenciaExigida * 1.1;
+        this.defesaExigida = defesaExigida * 1.1;
+    }
     // METODOS GET
 
     public String getDescricao() {
         return this.descricao;
     }
 
-    public int[] getAtributos(){
-        int[] Atributos = {forcaExigida, velociddadeExigida, inteligenciaExigida, defesaExigida};
+    public double[] getAtributos(){
+        double[] Atributos = {forcaExigida, velociddadeExigida, inteligenciaExigida, defesaExigida};
         return Atributos;
     }
 
     public int getQuantidadeMemnbros() {
         return this.quantidadeMemnbros;
     }
+
+    public int getXpDado(){
+        return this.xpDado;
+    }
 }
+

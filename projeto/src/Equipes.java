@@ -8,10 +8,10 @@ public class Equipes {
             grupo.add(herois[i]);
         }
     }
-    public int[] executarMissao(){
-        int[] retorno={0,0,0,0};
+    public double[] executarMissao(){
+        double[] retorno={0,0,0,0};
         for (int i=0;i<grupo.size();i++){
-            int[] resultado=grupo.get(i).executarMissao();
+            double[] resultado=grupo.get(i).executarMissao();
             if (resultado.length>0){
                 retorno[0]+=resultado[0];
                 retorno[1]+=resultado[1];

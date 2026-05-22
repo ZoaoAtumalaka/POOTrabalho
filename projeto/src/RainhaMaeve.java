@@ -15,8 +15,8 @@ public class RainhaMaeve extends Herois {
             this.autoEstima -= 20;
             return super.executarMissao();
         } else {
-            int[] atributos = {3};
-            return atributos;
+            int[] erro = {3};
+            return erro;
         }
 
     }

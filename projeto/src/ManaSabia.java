@@ -13,8 +13,8 @@ public class ManaSabia extends Herois{
             return super.executarMissao();
         }
         else {
-            int[] atributos = {6};
-            return atributos;
+            int[] erro = {6};
+            return erro;
         }
     }
 

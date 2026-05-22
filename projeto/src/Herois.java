@@ -1,9 +1,9 @@
 public class Herois implements Acoes,Runnable{
     private String  nome;
-    private int forca;
-    private int velocidade;
-    private int inteligencia;
-    private int defesa;
+    private double forca;
+    private double velocidade;
+    private double inteligencia;
+    private double defesa;
     private int xp;
     private int xpProximoNivel;
     private boolean acordado;
@@ -29,8 +29,8 @@ public class Herois implements Acoes,Runnable{
     }
 
     @Override
-    public int[] executarMissao(){
-        int[] atributos= {velocidade,inteligencia,defesa,forca};
+    public double[] executarMissao(){
+        double[] atributos= {velocidade,inteligencia,defesa,forca};
         return atributos;
     }
 

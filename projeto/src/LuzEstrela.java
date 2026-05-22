@@ -15,8 +15,8 @@ public class LuzEstrela extends Herois {
             this.fotoluminescencia -= 20;
             return super.executarMissao();
         } else {
-            int[] atributos = {2};
-            return atributos;
+            int[] erro = {2};
+            return erro;
         }
 
     }
