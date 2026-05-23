@@ -1,5 +1,5 @@
 public class Herois implements Acoes,Runnable{
-    private String  nome;
+    private String nome;
     private double forca;
     private double velocidade;
     private double inteligencia;
@@ -10,6 +10,7 @@ public class Herois implements Acoes,Runnable{
     private boolean morto;
     private int tempoDeDescanso;
 
+    // CONSTRUTOR
     public Herois(String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDeDescanso) {
         this.nome = nome;
         this.forca = forca;
@@ -23,6 +24,7 @@ public class Herois implements Acoes,Runnable{
         this.morto=false;
     }
 
+    // ESPECIAIS
     @Override
     public boolean verificarVida(){
         return this.morto;
@@ -44,6 +46,7 @@ public class Herois implements Acoes,Runnable{
         this.morto=false;
         this.acordado=true;
     }
+
     @Override
     public boolean darXp(int xp){
         if (this.xp>=this.xpProximoNivel){
@@ -55,6 +58,7 @@ public class Herois implements Acoes,Runnable{
             return false;
         }
     }
+
     @Override
     public void evoluir(String atributo){
         if (atributo.equals("Forca")){
@@ -67,6 +71,7 @@ public class Herois implements Acoes,Runnable{
             this.inteligencia*=1.1;
         }
     }
+
     @Override
     public void descansar(){
         try{
@@ -78,6 +83,7 @@ public class Herois implements Acoes,Runnable{
             System.out.println("Erro");
         }
     }
+
     @Override
     public void run(){
         descansar();

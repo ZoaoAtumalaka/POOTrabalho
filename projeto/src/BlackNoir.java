@@ -3,13 +3,13 @@ public class BlackNoir extends Herois {
 
     public BlackNoir (String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDescanso, int alucinacao){
         super("Black noir", 10,10,10,10,10);
-        this.alucinacao = 0;
+        this.alucinacao = 100;
     }
 
     @Override
     public double[] executarMissao() {
         if (alucinacao > 0){
-            this.alucinacao += 15;
+            this.alucinacao -= 15;
             return super.executarMissao();
         }
         else {

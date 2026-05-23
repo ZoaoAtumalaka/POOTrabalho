@@ -3,12 +3,11 @@ class CapitaoPatria extends Herois {
 
     // METODO CONSTRUTOR
     public CapitaoPatria() {
-        this.sanidade = 99;
         super("Capitão Pátria", 10, 10, 10, 10, 10);
+        this.sanidade = 99;
     }
 
     // METODOS ESPECIAIS
-
     @Override
     public double[] executarMissao() {
         if (this.sanidade > 0) {

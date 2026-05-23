@@ -1,15 +1,33 @@
 import java.util.ArrayList;
+import javax.swing.Timer;
+import java.util.Random;
 
 public class Dias {
+    // DIAS =  fases
+
         private ArrayList<Cenarios> cenariosFaceis;
         private ArrayList<Cenarios> cenariosMedios;
         private ArrayList<Cenarios> cenariosDificeis;
+
         private int quantidadeMissoesExecutadas;
         private int[] quantidadeMissoesPorDia;
         private Equipes equipeEnviada;
         private int culpadoFalha;
         private int missaoAtual;
 
+        // CONSTRUTOR
+        public Dias(ArrayList<Cenarios> cenariosFaceis, ArrayList<Cenarios> cenariosMedios, ArrayList<Cenarios> cenariosDificeis, int quantidadeMissoesExecutadas, int[] quantidadeMissoesPorDia, Equipes equipeEnviada, int missaoAtual){
+            this.cenariosFaceis = cenariosFaceis;
+            this.cenariosMedios = cenariosMedios;
+            this.cenariosDificeis = cenariosDificeis;
+            this.quantidadeMissoesExecutadas = quantidadeMissoesExecutadas;
+            this.quantidadeMissoesPorDia = quantidadeMissoesPorDia;
+            this.equipeEnviada = equipeEnviada;
+            this.culpadoFalha = 0;
+            this.missaoAtual = missaoAtual;
+        }
+
+        // ESPECIAIS
         public void passarDia(){
             for (int i =0; i < cenariosFaceis.size(); i++){
                 cenariosFaceis.get(i).aumentardificuldade();
@@ -23,42 +41,131 @@ public class Dias {
 
         }
 
-        public void darXp(){
-            return ;
+        public void darXp(int xp) {
+            for (int i = 0; i < equipeEnviada.getGrupo().size(); i++) {
+                equipeEnviada.getGrupo().get(i).darXp(xp);
+            }
         }
 
-        public void executarMissao(){
-            //timer aqui
-            if(){
+        public void executarMissao(Cenarios cenario){
 
+            // TIMER IRADISSIMO ROCK N ROLL!!!!
+            int[] segundos = {0};
+            Timer timer = new Timer(1000, e -> {
+                segundos[0]++;
+
+                if (segundos[0] >= 30) {
+                    ((Timer) e.getSource()).stop();
+
+                    if (equipeEnviada.getGrupo().isEmpty()) {
+                        this.culpadoFalha = 0;
+                        // avisar o front aqui (ainda nao sei como)
+
+                    } else {
+
+                        // TIMER DE IDA MANEIRO!!!!!
+
+                        int[] segundos2 = {0};
+                        Timer timer2 = new Timer(1000, o -> {
+
+                            segundos2[0]++;
+
+                            if(segundos2[0] >= cenario.getTempoDeIda()){
+                                ((Timer) o.getSource()).stop();
+
+                                int[] segundos3 = {0};
+
+                                // TIMER DE EXECUCAO LEGAL!!!!
+
+                                Timer timer3 = new Timer(1000, u -> {
+
+                                    segundos3[0]++;
+                                    if(segundos3[0] >= cenario.getTempoDeExecucao()){
+                                        ((Timer) u.getSource()).stop();
+
+                                        double[] resultado = equipeEnviada.executarMissao();
+                                        if (resultado.length == 1) {
+                                            this.culpadoFalha = (int) resultado[0];
+                                            equipeEnviada.falha();
+                                        } else {
+
+                                            // MÉDIA DOS ATRIBUTOS DO CENÁRIO
+                                            int somaAtributosC = 0;
+                                            int quantidadeAtributosC = 0;
+                                            double[] atributos = cenario.getAtributos();
+                                            for (int i = 0; i < atributos.length; i++) {
+                                                if (atributos[i] != 0) {
+                                                    somaAtributosC += atributos[i];
+                                                    quantidadeAtributosC += 1;
+                                                }
+                                            }
+                                            double mediaAtributosC = somaAtributosC / quantidadeAtributosC;
+
+                                            // MÉDIA DOS ATRIBUTOS DOS HERÓIS
+                                            int somaAtributosH = 0;
+                                            int quantidadeAtributosH = 0;
+                                            for (int i = 0; i < resultado.length; i++) {
+                                                if (resultado[i] != 0) {
+                                                    somaAtributosH += resultado[i];
+                                                    quantidadeAtributosH += 1;
+                                                }
+                                            }
+                                            double mediaAtributosH = somaAtributosH / quantidadeAtributosH;
+
+                                            Random random = new Random();
+                                            double numRandom = random.nextDouble() * mediaAtributosC;
+
+                                            if(numRandom >= mediaAtributosH && numRandom <= mediaAtributosC){
+                                                System.out.println("Sucesso mano");
+                                                darXp(50);
+                                            } else {
+                                                equipeEnviada.falha();
+                                                culpadoFalha = 9;
+                                            }
+                                            
+                                        }
+
+                                    }
+
+                                });
+                                timer3.start();
+                            }
+
+                        });
+                        timer2.start();
+
+                    }
+                }
+            });
+            timer.start();
+
+        }
+
+        public String motivoFalha(){
+            switch(culpadoFalha){
+                case 0:
+                    return "Falta de herois";
+                case 1:
+                    return "Capitão Pátria falhou";
+                case 2:
+                    return "Luz Estrela falhou";
+                case 3:
+                    return "Rainha Maeve falhou";
+                case 4:
+                    return "Black Noir falhou";
+                case 5:
+                    return "Trem Bala falhou";
+                case 6:
+                    return "Mana Sábia falhou";
+                case 7:
+                    return "Profundo falhou";
+                case 8:
+                    return "Falha em um teste de Atributo";
+                    case 9:
+                    return "Falha em um teste de Atributo";
+                default:
+                    return "Culpado desconhecido";
             }
         }
 
 }
-
-darXp- vai dar um return do xpDado
-
-    executarMissao-vai começar o timer de 30 segundos e a cada segundo verificar o array de equipe enviada se estiver vazia vai setar o culpadoFalha com um numero unico que o front vai entender que foi por falta de heroi enviados, se não estiver vazia vai pra proxima parte/ vai rodar o timer de ida atualizando a cada segundo pelo callback que retorna o horario pro front/ mesma coisa de antes so que pro horario de execução/aqui onde vai ter a divisao de cenarios e a aleatoriedade, vai chamar o metodo executarMissa da equipe, se retornar um array com um unico item falha e retorna false e vai pegar esse culpado e setar em culpadoFalha, se retornar maior vai passar pelo calculo de sucessao se passar retorna true/ se o array vier com um unico numero ou der false vai chamar matar do objeto de equipe;
-
-    motivoFalha- vai retornar culpadoFalha;
-
-    public int motivoFalha(){
-        switch(culpadoFalha){
-            case 1:
-                return "Capitão Pátria falhou";
-            case 2:
-                return "Luz Estrela falhou";
-            case 3:
-                return "Rainha Maeve falhou";
-            case 4:
-                return "Black Noir falhou";
-            case 5:
-                return "Trem Bala falhou";
-            case 6:
-                return "Mana Sábia falhou";
-            case 7:
-                return "Profundo falhou";
-            default:
-                return "Culpado desconhecido (ou a Vought encobriu)";
-        }
-    }
