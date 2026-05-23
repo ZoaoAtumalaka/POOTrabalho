@@ -9,14 +9,15 @@ public class Main {
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tela.setVisible(true);
         JButton botao =new JButton("iniciar");
+
         JButton botao1 =new JButton("Sair");
         JButton botao2=new JButton("Informações");
 
         JPanel painel= new JPanel();
         painel.setBounds(600,300,100,100);
         painel.add(botao);
-        painel.add(botao1);
         painel.add(botao2);
+        painel.add(botao1);
         tela.add(painel);
     }
 }

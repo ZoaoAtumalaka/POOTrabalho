@@ -7,13 +7,13 @@ public class BlackNoir extends Herois {
     }
 
     @Override
-    public int[] executarMissao() {
+    public double[] executarMissao() {
         if (alucinacao > 0){
             this.alucinacao += 15;
             return super.executarMissao();
         }
         else {
-            int[] erro = {4};
+            double[] erro = {4};
             return  erro;
         }
     }

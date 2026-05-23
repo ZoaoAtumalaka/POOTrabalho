@@ -7,14 +7,14 @@ public class TremBala extends Herois{
     }
 
     @Override
-    public int[] executarMissao() {
+    public double[] executarMissao() {
         if (coracao > 0){
             this.coracao -= 25;
             return super.executarMissao();
         }
 
         else {
-            int[] erro = {5};
+            double[] erro = {5};
             return erro;
         }
     }

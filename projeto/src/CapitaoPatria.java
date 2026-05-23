@@ -10,12 +10,12 @@ class CapitaoPatria extends Herois {
     // METODOS ESPECIAIS
 
     @Override
-    public int[] executarMissao() {
+    public double[] executarMissao() {
         if (this.sanidade > 0) {
             this.sanidade -= 33;
             return super.executarMissao();
         } else {
-            int[] erro = {1};
+            double[] erro = {1};
             return erro;
         }
 

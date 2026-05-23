@@ -10,12 +10,12 @@ public class LuzEstrela extends Herois {
     // METODOS ESPECIAIS
 
     @Override
-    public int[] executarMissao() {
+    public double[] executarMissao() {
         if (this.fotoluminescencia > 0) {
             this.fotoluminescencia -= 20;
             return super.executarMissao();
         } else {
-            int[] erro = {2};
+            double[] erro = {2};
             return erro;
         }
 

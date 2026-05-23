@@ -7,13 +7,13 @@ public class Profundo extends Herois{
     }
 
     @Override
-    public int[] executarMissao() {
+    public double[] executarMissao() {
         if (ansiedade < 100){
             this.ansiedade -= 25;
             return super.executarMissao();
         }
         else {
-            int[] erro = {6};
+            double[] erro = {6};
             return erro;
         }
     }

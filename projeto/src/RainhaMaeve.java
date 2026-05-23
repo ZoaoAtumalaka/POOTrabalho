@@ -10,12 +10,12 @@ public class RainhaMaeve extends Herois {
     // METODOS ESPECIAIS
 
     @Override
-    public int[] executarMissao() {
+    public double[] executarMissao() {
         if (this.autoEstima > 0) {
             this.autoEstima -= 20;
             return super.executarMissao();
         } else {
-            int[] erro = {3};
+            double[] erro = {3};
             return erro;
         }
 
