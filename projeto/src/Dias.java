@@ -27,10 +27,38 @@ public class Dias {
             return ;
         }
 
+        public void executarMissao(){
+            //timer aqui
+            if(){
+
+            }
+        }
 
 }
 
+darXp- vai dar um return do xpDado
 
-         darXp- vai dar um return do xpDado
-         executarMissao-vai começar o timer de 30 segundos e a cada segundo verificar o array de equipe enviada se estiver vazia vai setar o culpadoFalha com um numero unico que o front vai entender que foi por falta de heroi enviados, se não estiver vazia vai pra proxima parte/ vai rodar o timer de ida atualizando a cada segundo pelo callback que retorna o horario pro front/ mesma coisa de antes so que pro horario de execução/aqui onde vai ter a divisao de cenarios e a aleatoriedade, vai chamar o metodo executarMissa da equipe, se retornar um array com um unico item falha e retorna false e vai pegar esse culpado e setar em culpadoFalha, se retornar maior vai passar pelo calculo de sucessao se passar retorna true/ se o array vier com um unico numero ou der false vai chamar matar do objeto de equipe;
-         motivoFalha- vai retornar culpadoFalha;
+    executarMissao-vai começar o timer de 30 segundos e a cada segundo verificar o array de equipe enviada se estiver vazia vai setar o culpadoFalha com um numero unico que o front vai entender que foi por falta de heroi enviados, se não estiver vazia vai pra proxima parte/ vai rodar o timer de ida atualizando a cada segundo pelo callback que retorna o horario pro front/ mesma coisa de antes so que pro horario de execução/aqui onde vai ter a divisao de cenarios e a aleatoriedade, vai chamar o metodo executarMissa da equipe, se retornar um array com um unico item falha e retorna false e vai pegar esse culpado e setar em culpadoFalha, se retornar maior vai passar pelo calculo de sucessao se passar retorna true/ se o array vier com um unico numero ou der false vai chamar matar do objeto de equipe;
+
+    motivoFalha- vai retornar culpadoFalha;
+
+    public int motivoFalha(){
+        switch(culpadoFalha){
+            case 1:
+                return "Capitão Pátria falhou";
+            case 2:
+                return "Luz Estrela falhou";
+            case 3:
+                return "Rainha Maeve falhou";
+            case 4:
+                return "Black Noir falhou";
+            case 5:
+                return "Trem Bala falhou";
+            case 6:
+                return "Mana Sábia falhou";
+            case 7:
+                return "Profundo falhou";
+            default:
+                return "Culpado desconhecido (ou a Vought encobriu)";
+        }
+    }
