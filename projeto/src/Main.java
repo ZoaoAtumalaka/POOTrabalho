@@ -21,6 +21,8 @@ public class Main {
 
         tela.setLocationRelativeTo(null);
         tela.setVisible(true);
+
+
     }
 
 }

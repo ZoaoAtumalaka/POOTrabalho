@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import javax.swing.Timer;
 import java.util.Random;
 
 public class Dias {
@@ -22,9 +21,9 @@ public class Dias {
             this.cenariosDificeis = cenariosDificeis;
             this.quantidadeMissoesExecutadas = quantidadeMissoesExecutadas;
             this.quantidadeMissoesPorDia = quantidadeMissoesPorDia;
-            this.equipeEnviada = equipeEnviada;
+            //this.equipeEnviada = equipeEnviada;
             this.culpadoFalha = 0;
-            this.missaoAtual = missaoAtual;
+            this.missaoAtual = 0;
         }
 
         // ESPECIAIS
@@ -47,41 +46,22 @@ public class Dias {
             }
         }
 
-        public void executarMissao(Cenarios cenario){
+        public void executarMissao(Cenarios cenario) throws InterruptedException {
 
             // TIMER IRADISSIMO ROCK N ROLL!!!!
-            int[] segundos = {0};
-            Timer timer = new Timer(1000, e -> {
-                segundos[0]++;
-
-                if (segundos[0] >= 30) {
-                    ((Timer) e.getSource()).stop();
+            Thread.sleep(30000);
 
                     if (equipeEnviada.getGrupo().isEmpty()) {
                         this.culpadoFalha = 0;
+                        return;
                         // avisar o front aqui (ainda nao sei como)
-
                     } else {
 
                         // TIMER DE IDA MANEIRO!!!!!
-
-                        int[] segundos2 = {0};
-                        Timer timer2 = new Timer(1000, o -> {
-
-                            segundos2[0]++;
-
-                            if(segundos2[0] >= cenario.getTempoDeIda()){
-                                ((Timer) o.getSource()).stop();
-
-                                int[] segundos3 = {0};
+                        Thread.sleep(cenario.getTempoDeIda() * 1000L);
 
                                 // TIMER DE EXECUCAO LEGAL!!!!
-
-                                Timer timer3 = new Timer(1000, u -> {
-
-                                    segundos3[0]++;
-                                    if(segundos3[0] >= cenario.getTempoDeExecucao()){
-                                        ((Timer) u.getSource()).stop();
+                                Thread.sleep(cenario.getTempoDeExecucao() * 1000L);
 
                                         double[] resultado = equipeEnviada.executarMissao();
                                         if (resultado.length == 1) {
@@ -116,29 +96,17 @@ public class Dias {
                                             double numRandom = random.nextDouble() * mediaAtributosC;
 
                                             if(numRandom >= mediaAtributosH && numRandom <= mediaAtributosC){
-                                                System.out.println("Sucesso mano");
+                                                System.out.println("A Missão foi concluida com Sucesso!");
                                                 darXp(50);
                                             } else {
                                                 equipeEnviada.falha();
                                                 culpadoFalha = 9;
                                             }
-                                            
+
+                                            // TIMER DE VOLTA
+                                            Thread.sleep(cenario.getTempoDeVolta() * 1000L);
                                         }
-
-                                    }
-
-                                });
-                                timer3.start();
-                            }
-
-                        });
-                        timer2.start();
-
                     }
-                }
-            });
-            timer.start();
-
         }
 
         public String motivoFalha(){

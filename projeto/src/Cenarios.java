@@ -1,3 +1,6 @@
+import java.util.Random;
+import java.util.ArrayList;
+
 public class Cenarios {
     // Cenario = missão
 
@@ -9,12 +12,13 @@ public class Cenarios {
     private double defesaExigida;
     private int tempoDeIda;
     private int tempoDeExecucao;
+    private int tempoDeVolta;
     private int quantidadeMemnbros;
     private int xpDado;
 
     // METODO CONSTRUTOR
     public Cenarios(String descricao, int forcaExigida, int velociddadeExigida, int inteligenciaExigida,
-                    int defesaExigida, int tempoDeIda, int tempoDeExecucao, int quantidadeMemnbros, int xpDado){
+                    int defesaExigida, int tempoDeIda, int tempoDeExecucao, int tempoDeVolta, int quantidadeMemnbros, int xpDado){
         this.descricao = descricao;
         this.forcaExigida = forcaExigida;
         this.velociddadeExigida = velociddadeExigida;
@@ -22,6 +26,7 @@ public class Cenarios {
         this.defesaExigida = defesaExigida;
         this.tempoDeIda = tempoDeIda;
         this.tempoDeExecucao = tempoDeExecucao;
+        this.tempoDeVolta = tempoDeVolta;
         this.quantidadeMemnbros = quantidadeMemnbros;
         this.xpDado = xpDado;
     }
@@ -33,6 +38,19 @@ public class Cenarios {
         this.velociddadeExigida = velociddadeExigida * 1.1;
         this.inteligenciaExigida = inteligenciaExigida * 1.1;
         this.defesaExigida = defesaExigida * 1.1;
+    }
+
+    public Cenarios sortearCenario(ArrayList<Cenarios> listaCenarios) {
+
+        if (listaCenarios == null || listaCenarios.isEmpty()) {
+            System.out.println("Não há cenários disponíveis para sorteio.");
+            return null;
+        }
+        Random random = new Random();
+        int indiceAleatorio = random.nextInt(listaCenarios.size());
+        Cenarios cenarioEscolhido = listaCenarios.remove(indiceAleatorio);
+
+        return cenarioEscolhido;
     }
 
     // METODOS GET
@@ -57,5 +75,7 @@ public class Cenarios {
     public int getTempoDeIda(){ return this.tempoDeIda; };
 
     public int getTempoDeExecucao(){ return this.tempoDeExecucao; };
+
+    public int getTempoDeVolta(){ return this.tempoDeVolta; };
 }
 
