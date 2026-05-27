@@ -13,12 +13,12 @@ public class Cenarios {
     private int tempoDeIda;
     private int tempoDeExecucao;
     private int tempoDeVolta;
-    private int quantidadeMemnbros;
+    private int quantidadeMembros;
     private int xpDado;
 
     // METODO CONSTRUTOR
     public Cenarios(String descricao, int forcaExigida, int velociddadeExigida, int inteligenciaExigida,
-                    int defesaExigida, int tempoDeIda, int tempoDeExecucao, int tempoDeVolta, int quantidadeMemnbros, int xpDado){
+                    int defesaExigida, int tempoDeIda, int tempoDeExecucao, int tempoDeVolta, int quantidadeMembros, int xpDado){
         this.descricao = descricao;
         this.forcaExigida = forcaExigida;
         this.velociddadeExigida = velociddadeExigida;
@@ -27,7 +27,7 @@ public class Cenarios {
         this.tempoDeIda = tempoDeIda;
         this.tempoDeExecucao = tempoDeExecucao;
         this.tempoDeVolta = tempoDeVolta;
-        this.quantidadeMemnbros = quantidadeMemnbros;
+        this.quantidadeMembros = quantidadeMembros;
         this.xpDado = xpDado;
     }
 
@@ -64,8 +64,8 @@ public class Cenarios {
         return Atributos;
     }
 
-    public int getQuantidadeMemnbros() {
-        return this.quantidadeMemnbros;
+    public int getQuantidadeMembros() {
+        return this.quantidadeMembros;
     }
 
     public int getXpDado(){

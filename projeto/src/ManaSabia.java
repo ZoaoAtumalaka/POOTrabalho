@@ -9,7 +9,7 @@ public class ManaSabia extends Herois{
     @Override
     public double[] executarMissao() {
         if (fadigaMental < 100){
-            this.fadigaMental -= 25;
+            this.fadigaMental += 25;
             return super.executarMissao();
         }
         else {

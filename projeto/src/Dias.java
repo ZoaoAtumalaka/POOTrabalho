@@ -69,7 +69,7 @@ public class Dias {
                                             equipeEnviada.falha();
                                         } else {
 
-                                            // MÉDIA DOS ATRIBUTOS DO CENÁRIO
+                                            // MÉDIA DOS ATRIBUTOS DO CENÁRIO 
                                             int somaAtributosC = 0;
                                             int quantidadeAtributosC = 0;
                                             double[] atributos = cenario.getAtributos();
@@ -94,7 +94,7 @@ public class Dias {
 
                                             Random random = new Random();
                                             double numRandom = random.nextDouble() * mediaAtributosC;
-
+                                            //ver isso aqui em! KJAKKKK
                                             if(numRandom >= mediaAtributosH && numRandom <= mediaAtributosC){
                                                 System.out.println("A Missão foi concluida com Sucesso!");
                                                 darXp(50);
