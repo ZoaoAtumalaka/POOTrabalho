@@ -1,7 +1,7 @@
 public class ManaSabia extends Herois{
     private int fadigaMental;
 
-    public ManaSabia(String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDescanso, int fadigaMental){
+    public ManaSabia( ){
         super("Mana Sabia",10,10,10,10,10);
         this.fadigaMental = 0;
     }

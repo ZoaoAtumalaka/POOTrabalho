@@ -1,7 +1,7 @@
 public class BlackNoir extends Herois {
     private int alucinacao;
 
-    public BlackNoir (String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDescanso, int alucinacao){
+    public BlackNoir (){
         super("Black noir", 10,10,10,10,10);
         this.alucinacao = 100;
     }
@@ -20,7 +20,7 @@ public class BlackNoir extends Herois {
 
     @Override
     public void reanimar() {
-        this.alucinacao = 0;
+        this.alucinacao = 100;
         super.reanimar();
     }
 }

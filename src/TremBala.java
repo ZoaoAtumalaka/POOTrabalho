@@ -1,7 +1,7 @@
 public class TremBala extends Herois{
     private int coracao;
 
-    public TremBala (String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDescanso, int coracao){
+    public TremBala ( ){
         super("Trem Bala",10,10,10,10,10);
         this.coracao = 100;
     }

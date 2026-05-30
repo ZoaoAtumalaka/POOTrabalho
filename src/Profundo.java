@@ -1,7 +1,7 @@
 public class Profundo extends Herois{
     private int ansiedade;
 
-    public Profundo (String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDescanso, int sanidade){
+    public Profundo ( ){
         super("Profundo",10,10,10,10,10);
         this.ansiedade = 0;
     }

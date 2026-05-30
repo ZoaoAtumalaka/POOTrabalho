@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import javax.swing.Timer;
 
 public class Equipes {
 
@@ -21,7 +20,7 @@ public class Equipes {
         for (int i=0;i<grupo.size();i++){
             double[] resultado=grupo.get(i).executarMissao();
 
-            if (resultado.length>0){
+            if (resultado.length == 1){
                 retorno[0]+=resultado[0];
                 retorno[1]+=resultado[1];
                 retorno[2]+=resultado[2];
