@@ -14,7 +14,6 @@ public class Main {
         JFrame telaMenu = new JFrame("Inicial");
         telaMenu.setSize(1280, 720);
         telaMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        telaMenu.setLocationRelativeTo(null);
 
         JPanel painel = new JPanel();
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));

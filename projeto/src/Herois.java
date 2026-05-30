@@ -35,7 +35,10 @@ public class Herois implements Acoes,Runnable{
         double[] atributos= {velocidade,inteligencia,defesa,forca};
         return atributos;
     }
-
+    public double[] getAtributos(){
+        double[] atributos={this.forca,this.velocidade,this.inteligencia,this.defesa};
+        return atributos;
+    }
     @Override
     public void matar(){
         this.morto=true;
