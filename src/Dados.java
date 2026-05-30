@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Dados {
+public class Dados implements Serializable {
     private CapitaoPatria capitaoPatria;
     private TremBala tremBala;
     private ManaSabia manaSabia;
@@ -11,40 +11,42 @@ public class Dados {
     private Dias dias;
 
     public Dados(){
-//        esses erros tão dando pq o jão nao commitou ainda
-//        this.capitaoPatria=new CapitaoPatria();
-//        this.luzEstrela=new LuzEstrela();
-//        this.blackNoir=new BlackNoir();
-//        this.profundo=new Profundo();
-//        this.rainhaMaeve=new RainhaMaeve();
-//        this.manaSabia=new ManaSabia();
-//        this.tremBala=new TremBala();
-//        this.dias=new Dias();
+        this.capitaoPatria = new CapitaoPatria();
+        this.luzEstrela = new LuzEstrela();
+        this.blackNoir = new BlackNoir();
+        this.profundo = new Profundo();
+        this.rainhaMaeve = new RainhaMaeve();
+        this.manaSabia = new ManaSabia();
+        this.tremBala = new TremBala();
+        this.dias = new Dias();
     }
+
     public void salvar(){
         try {
             persistir();
         }catch (IOException e){
-            System.out.println("Erro");
+            System.out.println("Erro ao salvar o jogo.");
         }
     }
-    private Dados recuperar() throws IOException{
+
+    public Dados recuperar() {
         try (FileInputStream diretorio = new FileInputStream("save.ser");
              ObjectInputStream entrada = new ObjectInputStream(diretorio)) {
 
-//                tem que arrumar o try
-//            return (Dados) entrada.readObject();
+            return (Dados) entrada.readObject();
 
         } catch (FileNotFoundException e) {
             System.out.println("Arquivo de save não encontrado. Criando novos dados...");
             return new Dados();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro na leitura do save. Criando novos dados...");
+            return new Dados();
         }
-        return new Dados();
     }
+
     private void persistir() throws IOException {
-//        logica de persistencia em arquivo
-        FileOutputStream diretorio= new FileOutputStream("save.ser");
-        ObjectOutputStream saida= new ObjectOutputStream(diretorio);
+        FileOutputStream diretorio = new FileOutputStream("save.ser");
+        ObjectOutputStream saida = new ObjectOutputStream(diretorio);
         saida.writeObject(this);
         saida.close();
         diretorio.close();

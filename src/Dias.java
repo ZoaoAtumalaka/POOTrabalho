@@ -20,23 +20,33 @@ public class Dias {
         this.culpadoFalha = 0;
         this.missaoAtual = 0;
 
-        // CENARIOS FACEIS
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+// CENARIOS FACEIS
+        this.cenariosFaceis.add(new Cenarios("Resgatar gatinho cibernético na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Ajudar Velho Pucrson: O sumiço da dentadura", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Recuperar Wi-Fi do bar local", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Espantar pombos mutantes da praça", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Entregar pizza fria na casa branca", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Desativar despertador barulhento da senhora de idade ", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Encontrar os óculos do prefeito", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Limpar gosma verde dos esgotos", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Capturar animais do zoologico que sumiram", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Escoltar carrinho de feira da vovó", 5, 5, 5, 5, 10, 5, 10, 1, 10));
 
-        // CENARIOS MÉDIOS
-        this.cenariosMedios.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+// CENARIOS MÉDIOS
+        this.cenariosMedios.add(new Cenarios("Conter surto de IA em uma empresa", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosMedios.add(new Cenarios("Ajudar Velho Pucrson: A conspiração do asilo", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosMedios.add(new Cenarios("Para briga em bar de vilões", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosMedios.add(new Cenarios("Escoltar cantor famoso dentro do homelander music show", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosMedios.add(new Cenarios("Rastrear contrabandistas de composto V falso", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosMedios.add(new Cenarios("Interromper ritual de ceita", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosMedios.add(new Cenarios("Impedir the boys dentro do hospicio", 5, 5, 5, 5, 10, 5, 10, 1, 10));
 
-        // CENARIOS DIFÍCEIS
-        this.cenariosDificeis.add(new Cenarios("Resgatar gatinho na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+// CENARIOS DIFÍCEIS
+        this.cenariosDificeis.add(new Cenarios("Desarmar ogiva nuclear", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosDificeis.add(new Cenarios("Ajudar Velho Pucrson: O confronto final no .env", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosDificeis.add(new Cenarios("Derrotar o Bruto louco com composto V", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosDificeis.add(new Cenarios("Impedir guerra entre supers", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosDificeis.add(new Cenarios("Impedir vulcao em erupção", 5, 5, 5, 5, 10, 5, 10, 1, 10));
     }
 
     // ESPECIAIS
