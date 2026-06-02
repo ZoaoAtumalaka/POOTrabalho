@@ -1,14 +1,14 @@
 import java.io.*;
 
 public class Dados implements Serializable {
-    private CapitaoPatria capitaoPatria;
-    private TremBala tremBala;
-    private ManaSabia manaSabia;
-    private LuzEstrela luzEstrela;
-    private BlackNoir blackNoir;
-    private Profundo profundo;
-    private RainhaMaeve rainhaMaeve;
-    private Dias dias;
+    public CapitaoPatria capitaoPatria;
+    public TremBala tremBala;
+    public ManaSabia manaSabia;
+    public LuzEstrela luzEstrela;
+    public BlackNoir blackNoir;
+    public Profundo profundo;
+    public RainhaMaeve rainhaMaeve;
+    public Dias dias;
 
     public Dados(){
         this.capitaoPatria = new CapitaoPatria();
