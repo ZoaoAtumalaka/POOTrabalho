@@ -67,5 +67,6 @@ public class Cenarios {
 
     public int getTempoDeVolta(){ return this.tempoDeVolta; };
     public int getQuantidadeDeMembros(){return this.quantidadeMembros;}
+
 }
 
