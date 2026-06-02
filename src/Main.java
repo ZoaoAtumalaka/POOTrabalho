@@ -73,7 +73,6 @@ public class Main {
         painelBotoes.add(botaoInfo);
         painelBotoes.add(botaoSair);
 
-        // Adicionando os elementos respeitando o BorderLayout
         painelPrincipal.add(areaTexto, BorderLayout.CENTER);
         painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
 
@@ -138,7 +137,6 @@ public class Main {
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         telaJogo.add(painelPrincipal);
 
-        // --- SISTEMA DE VERIFICAÇÃO DA IMAGEM ---
         JLabel labelImagem;
         java.io.File arquivoImg = new java.io.File("Homelanderfirst.png");
 
@@ -148,7 +146,6 @@ public class Main {
             ImageIcon iconeFinal = new ImageIcon(imagemRedimensionada);
             labelImagem = new JLabel(iconeFinal);
         } else {
-            // Se não existir, cria um texto de aviso para você saber que o caminho está errado
             labelImagem = new JLabel("ERRO: Imagem 'Homelanderfirst.png' não encontrada na raiz do projeto!");
             labelImagem.setFont(new Font("Arial", Font.BOLD, 20));
             labelImagem.setForeground(Color.RED);
@@ -157,7 +154,6 @@ public class Main {
 
         painelPrincipal.add(labelImagem, BorderLayout.CENTER);
 
-        // --- PAINEL INFERIOR ---
         JPanel painelInferior = new JPanel(new BorderLayout());
         painelInferior.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
