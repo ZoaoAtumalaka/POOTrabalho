@@ -5,7 +5,7 @@ public class Equipes {
     private ArrayList<Herois> grupo;
 
     // CONSTRUTOR
-    public Equipes(Herois... herois){
+    public Equipes(Herois[] herois){
         grupo= new ArrayList<>();
         for (int i = 0; i < herois.length; i++) {
             grupo.add(herois[i]);

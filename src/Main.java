@@ -226,14 +226,117 @@ public class Main {
         telaJogo.setVisible(true);
 
     }
-
+    public void fase(){
+//        aqui onde vai ficar o timer entre missoes
+    }
 
     public void missao() throws InterruptedException{
+//
+//        // swing da tela de herois disponiveis
+//        // vai chamar o metodo sortear cenario de dias
+//        // timer de 30 segundos
+//        // vai ficar esperando o front atualizar o heroi
+//        // quando atualizar vai chamar o metodo executar missao passando o cenario randomizado
+        JFrame telaMissao = new JFrame("Nova Crise Detectada!");
+        telaMissao.setSize(800, 600);
+        telaMissao.setLocationRelativeTo(null);
+        telaMissao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // swing da tela de herois disponiveis
-        // vai chamar o metodo sortear cenario de dias
-        // timer de 30 segundos
-        // vai ficar esperando o front atualizar o heroi
-        // quando atualizar vai chamar o metodo executar missao passando o cenario randomizado
+    }
+
+
+    public void missao() {
+        JFrame telaMissao = new JFrame("Nova Crise Detectada!");
+        telaMissao.setSize(1080, 720);
+        telaMissao.setLocationRelativeTo(null);
+        telaMissao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        telaMissao.setLayout(new BorderLayout(20, 20));
+
+        Cenarios cenario = dias.sortearCenario(null); // Ajuste conforme a lógica da sua classe Dias
+
+        JPanel painelSuperior = new JPanel(new BorderLayout());
+        JTextArea infoCenario = new JTextArea("ALERTA DE CRISE: " + cenario.getDescricao() +
+                "\nTempo para resposta: 30 segundos!");
+        infoCenario.setFont(new Font("Consolas", Font.BOLD, 20));
+        infoCenario.setEditable(false);
+
+        JLabel labelTempo = new JLabel("30", SwingConstants.CENTER);
+        labelTempo.setFont(new Font("Arial", Font.BOLD, 40));
+        labelTempo.setForeground(Color.RED);
+
+        painelSuperior.add(infoCenario, BorderLayout.CENTER);
+        painelSuperior.add(labelTempo, BorderLayout.EAST);
+        telaMissao.add(painelSuperior, BorderLayout.NORTH);
+
+        JPanel painelHerois = new JPanel(new GridLayout(3, 3, 10, 10));
+        painelHerois.setBorder(BorderFactory.createTitledBorder("Selecione a Equipe"));
+
+        JCheckBox cbCapitao = new JCheckBox("Capitão Pátria");
+        JCheckBox cbLuzEstrela = new JCheckBox("Luz Estrela");
+        JCheckBox cbMaeve = new JCheckBox("Rainha Maeve");
+        JCheckBox cbNoir = new JCheckBox("Black Noir");
+        JCheckBox cbTremBala = new JCheckBox("Trem Bala");
+        JCheckBox cbMana = new JCheckBox("Mana Sábia");
+        JCheckBox cbProfundo = new JCheckBox("Profundo");
+
+        painelHerois.add(cbCapitao);
+        painelHerois.add(cbLuzEstrela);
+        painelHerois.add(cbMaeve);
+        painelHerois.add(cbNoir);
+        painelHerois.add(cbTremBala);
+        painelHerois.add(cbMana);
+        painelHerois.add(cbProfundo);
+
+        telaMissao.add(painelHerois, BorderLayout.CENTER);
+
+        JButton btnEnviar = new JButton("ENVIAR EQUIPE");
+        btnEnviar.setFont(new Font("Arial", Font.BOLD, 24));
+        telaMissao.add(btnEnviar, BorderLayout.SOUTH);
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            int tempoRestante = 30;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tempoRestante--;
+                labelTempo.setText(String.valueOf(tempoRestante));
+
+                if (tempoRestante <= 0) {
+                    ((Timer) e.getSource()).stop();
+                    telaMissao.dispose();
+                    JOptionPane.showMessageLabel(null, "TEMPO ESGOTADO! A missão falhou por falta de resposta.", "FALHA", JOptionPane.ERROR_MESSAGE);
+                    fase(); // Retorna para o front de fase
+                }
+            }
+        });
+        timer.start();
+
+        // 6. Ação de Enviar
+        btnEnviar.addActionListener(e -> {
+            timer.stop(); // Para o timer pois o jogador respondeu
+
+            ArrayList<Herois> selecionados = new ArrayList<>();
+            if (cbCapitao.isSelected()) selecionados.add(capitaoPatria);
+            if (cbLuzEstrela.isSelected()) selecionados.add(luzEstrela);
+            if (cbMaeve.isSelected()) selecionados.add(rainhaMaeve);
+            if (cbNoir.isSelected()) selecionados.add(blackNoir);
+            if (cbTremBala.isSelected()) selecionados.add(tremBala);
+            if (cbMana.isSelected()) selecionados.add(manaSabia);
+            if (cbProfundo.isSelected()) selecionados.add(profundo);
+
+            Herois[] arrayHerois = selecionados.toArray(new Herois[0]);
+            Equipes equipeEnviada = new Equipes(arrayHerois);
+
+            telaMissao.dispose();
+
+            if (selecionados.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Você não enviou ninguém! A missão falhou.");
+                fase(); // Retorna para a fase
+            } else {
+                telaResultados(cenario, equipeEnviada);
+            }
+        });
+
+        telaMissao.setVisible(true);
     }
 }
