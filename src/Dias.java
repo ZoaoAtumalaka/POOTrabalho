@@ -7,10 +7,11 @@ public class Dias {
     private ArrayList<Cenarios> cenariosMedios;
     private ArrayList<Cenarios> cenariosDificeis;
     private int quantidadeMissoesExecutadas;
-    private int[] quantidadeMissoesPorDia;
     private Equipes equipeEnviada;
     private int culpadoFalha;
     private int missaoAtual;
+    private int[]{} divisaoCenarios = {{2,2,2},{2,2,2},{2,2,2}};
+    private int diaAtual;
 
     // CONSTRUTOR
     public Dias() {
@@ -19,6 +20,7 @@ public class Dias {
         this.cenariosDificeis = new ArrayList<Cenarios>();
         this.culpadoFalha = 0;
         this.missaoAtual = 0;
+        this.diaAtual=1;
 
 // CENARIOS FACEIS
         this.cenariosFaceis.add(new Cenarios("Resgatar gatinho cibernético na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
@@ -50,16 +52,17 @@ public class Dias {
     }
 
     // ESPECIAIS
-    public void passarDia(ArrayList<Cenarios> cenariosFaceis, ArrayList<Cenarios> cenariosMedios, ArrayList<Cenarios> cenariosDificeis) {
+    public void passarDia() {
         for (int i = 0; i < cenariosFaceis.size(); i++) {
-            cenariosFaceis.get(i).aumentardificuldade();
+            this.cenariosFaceis.get(i).aumentardificuldade();
         }
         for (int i = 0; i < cenariosMedios.size(); i++) {
-            cenariosMedios.get(i).aumentardificuldade();
+            this.cenariosMedios.get(i).aumentardificuldade();
         }
         for (int i = 0; i < cenariosDificeis.size(); i++) {
-            cenariosDificeis.get(i).aumentardificuldade();
+            this.cenariosDificeis.get(i).aumentardificuldade();
         }
+        this.diaAtual++;
     }
 
     public void darXp(Equipes equipeEnviada, int xp) {
@@ -128,7 +131,16 @@ public class Dias {
             }
         }
     }
-
+    public Cenarios sortearCenario(ArrayList<Cenarios> listaCenarios) {
+        Random random = new Random();
+        if (missaoAtual<= this.divisaoCenarios[diaAtual][0]){
+            return cenariosFaceis.get(random.nextInt[cenariosFaceis.size()]);
+        } else if (missaoAtual<= this.divisaoCenarios[diaAtual][1]+this.divisaoCenarios[diaAtual][0]&& missaoAtual>= this.divisaoCenarios[diaAtual][0]) {
+            return cenariosMedios.get(random.nextInt[cenariosMedios.size()]);
+        } else if (missaoAtual<= this.divisaoCenarios[diaAtual][1]+this.divisaoCenarios[diaAtual][0]+this.divisaoCenario[diaAtual][2]&& missaoAtual>= this.divisaoCenarios[diaAtual][1]) {
+            return cenariosDificeis.get(random.nextInt[cenariosDificeis.size()]);
+        }
+    }
     public String motivoFalha() {
         switch (culpadoFalha) {
             case 0:

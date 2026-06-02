@@ -40,18 +40,7 @@ public class Cenarios {
         this.defesaExigida = defesaExigida * 1.1;
     }
 
-    public Cenarios sortearCenario(ArrayList<Cenarios> listaCenarios) {
 
-        if (listaCenarios == null || listaCenarios.isEmpty()) {
-            System.out.println("Não há cenários disponíveis para sorteio.");
-            return null;
-        }
-        Random random = new Random();
-        int indiceAleatorio = random.nextInt(listaCenarios.size());
-        Cenarios cenarioEscolhido = listaCenarios.remove(indiceAleatorio);
-
-        return cenarioEscolhido;
-    }
 
     // METODOS GET
 
@@ -77,5 +66,6 @@ public class Cenarios {
     public int getTempoDeExecucao(){ return this.tempoDeExecucao; };
 
     public int getTempoDeVolta(){ return this.tempoDeVolta; };
+    public int getQuantidadeDeMembros(){return this.quantidadeMembros;}
 }
 

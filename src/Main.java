@@ -17,8 +17,6 @@ public class Main {
     private ManaSabia manaSabia = new ManaSabia();
     private Profundo profundo = new Profundo();
 
-    private final int TOTAL_DIAS = 4;
-
     public static void main(String[] args){
 
         LafManager.install(new DarculaTheme());
@@ -33,7 +31,7 @@ public class Main {
     public void menuPrincipal() {
 
         JFrame telaMenu = new JFrame("Menu Inicial");
-        telaMenu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        telaMenu.setSize(1920, 1080);
         telaMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         telaMenu.setLocationRelativeTo(null);
 
@@ -51,7 +49,7 @@ public class Main {
 
         // Painel exclusivo para os botões ficarem alinhados lado a lado embaixo
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        JButton botaoIniciar = new JButton("Novo Jogo");
+        JButton botaoIniciar = new JButton("Iniciar");
         JButton botaoSair = new JButton("Sair");
         JButton botaoInfo = new JButton("Informações");
         botaoIniciar.setFont(new Font("Arial", Font.BOLD, 30));
@@ -87,7 +85,7 @@ public class Main {
 
     public void ajuda(){
         JFrame telaAjuda = new JFrame("Informações do Jogo");
-        telaAjuda.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        telaAjuda.setSize(1920, 1080);
         telaAjuda.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         telaAjuda.setLocationRelativeTo(null);
 
@@ -132,7 +130,7 @@ public class Main {
     public void dialogo(int dia) {
 
         JFrame telaJogo = new JFrame("DISPATCH - GERENCIADOR DE HERÓIS");
-        telaJogo.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        telaJogo.setSize(1920, 1080);
         telaJogo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         telaJogo.setLocationRelativeTo(null);
 
@@ -140,6 +138,7 @@ public class Main {
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         telaJogo.add(painelPrincipal);
 
+        // --- SISTEMA DE VERIFICAÇÃO DA IMAGEM ---
         JLabel labelImagem;
         java.io.File arquivoImg = new java.io.File("Homelanderfirst.png");
 
@@ -149,6 +148,7 @@ public class Main {
             ImageIcon iconeFinal = new ImageIcon(imagemRedimensionada);
             labelImagem = new JLabel(iconeFinal);
         } else {
+            // Se não existir, cria um texto de aviso para você saber que o caminho está errado
             labelImagem = new JLabel("ERRO: Imagem 'Homelanderfirst.png' não encontrada na raiz do projeto!");
             labelImagem.setFont(new Font("Arial", Font.BOLD, 20));
             labelImagem.setForeground(Color.RED);
@@ -157,6 +157,7 @@ public class Main {
 
         painelPrincipal.add(labelImagem, BorderLayout.CENTER);
 
+        // --- PAINEL INFERIOR ---
         JPanel painelInferior = new JPanel(new BorderLayout());
         painelInferior.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
@@ -181,23 +182,27 @@ public class Main {
         String[][] dialogos = {
                 // Dia 1
                 {
+                        "a",
                         "Bem-vindo à Vought. Sou Madelyn Stillwell.",
                         "Os Sete precisam de um gerenciador de missões.",
                         "Você foi selecionado. Não nos decepcione."
                 },
                 // Dia 2
                 {
+                        "Homelanderfirst.png",
                         "Bom trabalho no primeiro dia.",
                         "Mas as missões vão ficar mais difíceis.",
                         "O Homelander está observando seu progresso."
                 },
                 // Dia 3
                 {
+                        "Homelanderfirst.png",
                         "Este é o dia decisivo.",
                         "O futuro dos Sete está nas suas mãos."
                 },
                 // Dia 4 (FINAL)
                 {
+                        "Homelanderfirst.png",
                         "ACABOU.",
                         "TODOS MORRERAM.",
                         "MUHAHAHHAHAHAHA."
@@ -214,7 +219,7 @@ public class Main {
                 areaTexto.setText(dialogos[dia][indice[0]]);
             } else {
                 telaJogo.dispose();
-                salvar(dia);
+                try { missao(); } catch (InterruptedException ex) { ex.printStackTrace(); }
             }
         });
 
@@ -222,48 +227,6 @@ public class Main {
 
     }
 
-    public void salvar(int dia){
-        JFrame tela = new JFrame("DISPATCH - SALVAMENTO");
-        tela.setSize(400, 200);
-        tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        tela.setLocationRelativeTo(null);
-
-        String textoDialogo1 = "Deseja salvar o jogo?";
-        JTextArea areaTexto = new JTextArea(textoDialogo1);
-        areaTexto.setFont(new Font("Consolas", Font.BOLD, 24));
-        areaTexto.setLineWrap(true);
-        areaTexto.setWrapStyleWord(true);
-        areaTexto.setEditable(false);
-        areaTexto.setBackground(tela.getBackground());
-
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        JButton botaoSalvar = new JButton("Salvar"); // corrigido
-        botaoSalvar.setFont(new Font("Arial", Font.BOLD, 26));
-        painelBotoes.add(botaoSalvar);
-
-        JButton botaoNaoSalvar = new JButton("Não Salvar"); // corrigido
-        botaoNaoSalvar.setFont(new Font("Arial", Font.BOLD, 26));
-        painelBotoes.add(botaoNaoSalvar);
-
-        botaoSalvar.addActionListener(e -> {
-            Dados dados = new Dados();
-            dados.salvar();
-            tela.dispose();
-            if (dia + 1 < TOTAL_DIAS) {
-                dialogo(dia + 1);
-            } else {
-                menuPrincipal();
-            }
-        });
-
-        botaoNaoSalvar.addActionListener(e -> tela.dispose());
-
-        tela.add(areaTexto, BorderLayout.CENTER);
-        tela.add(painelBotoes, BorderLayout.SOUTH);
-
-        tela.setVisible(true);
-    }
 
     public void missao() throws InterruptedException{
 
