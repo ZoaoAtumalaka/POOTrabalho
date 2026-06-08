@@ -10,7 +10,7 @@ public class Dias {
     private Equipes equipeEnviada;
     private int culpadoFalha;
     private int missaoAtual;
-    private int[]{} divisaoCenarios = {{2,2,2},{2,2,2},{2,2,2}};
+    private int[][] divisaoCenarios = {{2,2,2},{2,2,2},{2,2,2}};  // CORRIGIDO: int[][] ao invés de int[]{}
     private int diaAtual;
 
     // CONSTRUTOR
@@ -20,7 +20,7 @@ public class Dias {
         this.cenariosDificeis = new ArrayList<Cenarios>();
         this.culpadoFalha = 0;
         this.missaoAtual = 0;
-        this.diaAtual=1;
+        this.diaAtual = 1;
 
 // CENARIOS FACEIS
         this.cenariosFaceis.add(new Cenarios("Resgatar gatinho cibernético na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
@@ -28,7 +28,7 @@ public class Dias {
         this.cenariosFaceis.add(new Cenarios("Recuperar Wi-Fi do bar local", 5, 5, 5, 5, 10, 5, 10, 1, 10));
         this.cenariosFaceis.add(new Cenarios("Espantar pombos mutantes da praça", 5, 5, 5, 5, 10, 5, 10, 1, 10));
         this.cenariosFaceis.add(new Cenarios("Entregar pizza fria na casa branca", 5, 5, 5, 5, 10, 5, 10, 1, 10));
-        this.cenariosFaceis.add(new Cenarios("Desativar despertador barulhento da senhora de idade ", 5, 5, 5, 5, 10, 5, 10, 1, 10));
+        this.cenariosFaceis.add(new Cenarios("Desativar despertador barulhento da senhora de idade", 5, 5, 5, 5, 10, 5, 10, 1, 10));
         this.cenariosFaceis.add(new Cenarios("Encontrar os óculos do prefeito", 5, 5, 5, 5, 10, 5, 10, 1, 10));
         this.cenariosFaceis.add(new Cenarios("Limpar gosma verde dos esgotos", 5, 5, 5, 5, 10, 5, 10, 1, 10));
         this.cenariosFaceis.add(new Cenarios("Capturar animais do zoologico que sumiram", 5, 5, 5, 5, 10, 5, 10, 1, 10));
@@ -120,7 +120,7 @@ public class Dias {
 
                 if (numRandom >= mediaAtributosH && numRandom <= mediaAtributosC) {
                     System.out.println("A Missão foi concluída com Sucesso!");
-                    darXp(equipeEnviada, cenario.getXpDado()); // CORRIGIDO: Passando equipeEnviada
+                    darXp(equipeEnviada, cenario.getXpDado());
                 } else {
                     equipeEnviada.falha();
                     this.culpadoFalha = 9;
@@ -131,39 +131,36 @@ public class Dias {
             }
         }
     }
-    public Cenarios sortearCenario(ArrayList<Cenarios> listaCenarios) {
+
+    public Cenarios sortearCenario() {
         Random random = new Random();
-        if (missaoAtual<= this.divisaoCenarios[diaAtual][0]){
-            return cenariosFaceis.get(random.nextInt[cenariosFaceis.size()]);
-        } else if (missaoAtual<= this.divisaoCenarios[diaAtual][1]+this.divisaoCenarios[diaAtual][0]&& missaoAtual>= this.divisaoCenarios[diaAtual][0]) {
-            return cenariosMedios.get(random.nextInt[cenariosMedios.size()]);
-        } else if (missaoAtual<= this.divisaoCenarios[diaAtual][1]+this.divisaoCenarios[diaAtual][0]+this.divisaoCenario[diaAtual][2]&& missaoAtual>= this.divisaoCenarios[diaAtual][1]) {
-            return cenariosDificeis.get(random.nextInt[cenariosDificeis.size()]);
+        // CORRIGIDO: nextInt(...) com parênteses, divisaoCenarios (com 's'), e return padrão
+        if (missaoAtual <= this.divisaoCenarios[diaAtual][0]) {
+            return cenariosFaceis.get(random.nextInt(cenariosFaceis.size()));
+        } else if (missaoAtual <= this.divisaoCenarios[diaAtual][1] + this.divisaoCenarios[diaAtual][0]
+                && missaoAtual >= this.divisaoCenarios[diaAtual][0]) {
+            return cenariosMedios.get(random.nextInt(cenariosMedios.size()));
+        } else if (missaoAtual <= this.divisaoCenarios[diaAtual][1] + this.divisaoCenarios[diaAtual][0] + this.divisaoCenarios[diaAtual][2]
+                && missaoAtual >= this.divisaoCenarios[diaAtual][1]) {
+            return cenariosDificeis.get(random.nextInt(cenariosDificeis.size()));
         }
+        // CORRIGIDO: return padrão para evitar erro de compilação
+        return cenariosFaceis.get(random.nextInt(cenariosFaceis.size()));
     }
+
     public String motivoFalha() {
         switch (culpadoFalha) {
-            case 0:
-                return "Falta de herois";
-            case 1:
-                return "Capitão Pátria falhou";
-            case 2:
-                return "Luz Estrela falhou";
-            case 3:
-                return "Rainha Maeve falhou";
-            case 4:
-                return "Black Noir falhou";
-            case 5:
-                return "Trem Bala falhou";
-            case 6:
-                return "Mana Sábia falhou";
-            case 7:
-                return "Profundo falhou";
+            case 0: return "Falta de herois";
+            case 1: return "Capitão Pátria falhou";
+            case 2: return "Luz Estrela falhou";
+            case 3: return "Rainha Maeve falhou";
+            case 4: return "Black Noir falhou";
+            case 5: return "Trem Bala falhou";
+            case 6: return "Mana Sábia falhou";
+            case 7: return "Profundo falhou";
             case 8:
-            case 9:
-                return "Falha em um teste de Atributo";
-            default:
-                return "Culpado desconhecido";
+            case 9: return "Falha em um teste de Atributo";
+            default: return "Culpado desconhecido";
         }
     }
 }

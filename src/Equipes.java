@@ -4,12 +4,7 @@ public class Equipes {
 
     private ArrayList<Herois> grupo;
 
-    // CONSTRUTOR
-    public Equipes(Herois[] herois){
-        grupo= new ArrayList<>();
-        for (int i = 0; i < herois.length; i++) {
-            grupo.add(herois[i]);
-        }
+    public Equipes(CapitaoPatria capitaoPatria, LuzEstrela luzEstrela, RainhaMaeve rainhaMaeve, BlackNoir blackNoir, TremBala tremBala, ManaSabia manaSabia, Profundo profundo) {
     }
 
     // ESPECIAIS

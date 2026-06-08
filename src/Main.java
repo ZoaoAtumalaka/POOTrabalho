@@ -1,41 +1,41 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import com.github.weisj.darklaf.LafManager;
 import com.github.weisj.darklaf.components.uiresource.JButtonUIResource;
 import com.github.weisj.darklaf.theme.DarculaTheme;
-import javax.swing.SwingUtilities;
 
 public class Main {
 
     private Equipes equipe;
-
-    private CapitaoPatria capitaoPatria = new CapitaoPatria();
-    private LuzEstrela luzEstrela = new LuzEstrela();
-    private RainhaMaeve rainhaMaeve = new RainhaMaeve();
-    private BlackNoir blackNoir = new BlackNoir();
-    private TremBala tremBala = new TremBala();
-    private ManaSabia manaSabia = new ManaSabia();
-    private Profundo profundo = new Profundo();
+    private Dados dados;  // CORRIGIDO: instância de Dados para acessar 'dias' e heróis
 
     public static void main(String[] args){
-
         LafManager.install(new DarculaTheme());
         SwingUtilities.invokeLater(() -> {
             Main app = new Main();
-            app.equipe = new Equipes(app.capitaoPatria, app.luzEstrela, app.rainhaMaeve, app.blackNoir, app.tremBala, app.manaSabia, app.profundo);
+            app.dados = new Dados();
+            app.equipe = new Equipes(
+                    app.dados.capitaoPatria,
+                    app.dados.luzEstrela,
+                    app.dados.rainhaMaeve,
+                    app.dados.blackNoir,
+                    app.dados.tremBala,
+                    app.dados.manaSabia,
+                    app.dados.profundo
+            );
             app.menuPrincipal();
         });
-
     }
 
     public void menuPrincipal() {
-
         JFrame telaMenu = new JFrame("Menu Inicial");
         telaMenu.setSize(1920, 1080);
         telaMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         telaMenu.setLocationRelativeTo(null);
 
-        // Definindo BorderLayout para o painel principal conseguir organizar o texto e botões
         JPanel painelPrincipal = new JPanel(new BorderLayout());
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
 
@@ -47,7 +47,6 @@ public class Main {
         areaTexto.setEditable(false);
         areaTexto.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Painel exclusivo para os botões ficarem alinhados lado a lado embaixo
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton botaoIniciar = new JButton("Iniciar");
         JButton botaoSair = new JButton("Sair");
@@ -56,7 +55,6 @@ public class Main {
         botaoInfo.setFont(new Font("Arial", Font.BOLD, 30));
         botaoSair.setFont(new Font("Arial", Font.BOLD, 30));
 
-        // Ações dos Botões
         botaoIniciar.addActionListener(e -> {
             telaMenu.dispose();
             dialogo(0);
@@ -77,9 +75,7 @@ public class Main {
         painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
 
         telaMenu.add(painelPrincipal);
-
         telaMenu.setVisible(true);
-
     }
 
     public void ajuda(){
@@ -90,7 +86,7 @@ public class Main {
 
         JPanel painelAjuda = new JPanel();
         painelAjuda.setLayout(new BorderLayout());
-        painelAjuda.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100)); // Margens
+        painelAjuda.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
 
         String textoRegras =
                 "BEM-VINDO AO DISPATCH: THE BOYS\n\n" +
@@ -127,7 +123,6 @@ public class Main {
     }
 
     public void dialogo(int dia) {
-
         JFrame telaJogo = new JFrame("DISPATCH - GERENCIADOR DE HERÓIS");
         telaJogo.setSize(1920, 1080);
         telaJogo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -215,33 +210,18 @@ public class Main {
                 areaTexto.setText(dialogos[dia][indice[0]]);
             } else {
                 telaJogo.dispose();
-                try { missao(); } catch (InterruptedException ex) { ex.printStackTrace(); }
+                missao();
             }
         });
 
         telaJogo.setVisible(true);
-
     }
-
 
     public void fase(){
-//        aqui onde vai ficar o timer entre missoes
+        // aqui onde vai ficar o timer entre missoes
     }
 
-    public void missao() throws InterruptedException{
-// swing da tela de herois disponiveis
-// vai chamar o metodo sortear cenario de dias
-// timer de 30 segundos
-// vai ficar esperando o front atualizar o heroi
-// quando atualizar vai chamar o metodo executar missao passando o cenario randomizado
-        JFrame telaMissao = new JFrame("Nova Crise Detectada!");
-        telaMissao.setSize(800, 600);
-        telaMissao.setLocationRelativeTo(null);
-        telaMissao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    }
-
-
+    // CORRIGIDO: método único sem throws InterruptedException (o Timer já é assíncrono)
     public void missao() {
         JFrame telaMissao = new JFrame("Nova Crise Detectada!");
         telaMissao.setSize(1080, 720);
@@ -249,7 +229,8 @@ public class Main {
         telaMissao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         telaMissao.setLayout(new BorderLayout(20, 20));
 
-        Cenarios cenario = dias.sortearCenario(null); // Ajuste conforme a lógica da sua classe Dias
+        // CORRIGIDO: usando this.dados.dias para acessar o objeto Dias
+        Cenarios cenario = dados.dias.sortearCenario();
 
         JPanel painelSuperior = new JPanel(new BorderLayout());
         JTextArea infoCenario = new JTextArea("ALERTA DE CRISE: " + cenario.getDescricao() +
@@ -268,13 +249,13 @@ public class Main {
         JPanel painelHerois = new JPanel(new GridLayout(3, 3, 10, 10));
         painelHerois.setBorder(BorderFactory.createTitledBorder("Selecione a Equipe"));
 
-        JCheckBox cbCapitao = new JCheckBox("Capitão Pátria");
+        JCheckBox cbCapitao    = new JCheckBox("Capitão Pátria");
         JCheckBox cbLuzEstrela = new JCheckBox("Luz Estrela");
-        JCheckBox cbMaeve = new JCheckBox("Rainha Maeve");
-        JCheckBox cbNoir = new JCheckBox("Black Noir");
-        JCheckBox cbTremBala = new JCheckBox("Trem Bala");
-        JCheckBox cbMana = new JCheckBox("Mana Sábia");
-        JCheckBox cbProfundo = new JCheckBox("Profundo");
+        JCheckBox cbMaeve      = new JCheckBox("Rainha Maeve");
+        JCheckBox cbNoir       = new JCheckBox("Black Noir");
+        JCheckBox cbTremBala   = new JCheckBox("Trem Bala");
+        JCheckBox cbMana       = new JCheckBox("Mana Sábia");
+        JCheckBox cbProfundo   = new JCheckBox("Profundo");
 
         painelHerois.add(cbCapitao);
         painelHerois.add(cbLuzEstrela);
@@ -301,7 +282,8 @@ public class Main {
                 if (tempoRestante <= 0) {
                     ((Timer) e.getSource()).stop();
                     telaMissao.dispose();
-                    JOptionPane.showMessageLabel(null, "TEMPO ESGOTADO! A missão falhou por falta de resposta.", "FALHA", JOptionPane.ERROR_MESSAGE);
+                    // CORRIGIDO: showMessageDialog (não showMessageLabel)
+                    JOptionPane.showMessageDialog(null, "TEMPO ESGOTADO! A missão falhou por falta de resposta.", "FALHA", JOptionPane.ERROR_MESSAGE);
                     fase();
                 }
             }
@@ -312,13 +294,13 @@ public class Main {
             timer.stop();
 
             ArrayList<Herois> selecionados = new ArrayList<>();
-            if (cbCapitao.isSelected()) selecionados.add(capitaoPatria);
-            if (cbLuzEstrela.isSelected()) selecionados.add(luzEstrela);
-            if (cbMaeve.isSelected()) selecionados.add(rainhaMaeve);
-            if (cbNoir.isSelected()) selecionados.add(blackNoir);
-            if (cbTremBala.isSelected()) selecionados.add(tremBala);
-            if (cbMana.isSelected()) selecionados.add(manaSabia);
-            if (cbProfundo.isSelected()) selecionados.add(profundo);
+            if (cbCapitao.isSelected())    selecionados.add(dados.capitaoPatria);
+            if (cbLuzEstrela.isSelected()) selecionados.add(dados.luzEstrela);
+            if (cbMaeve.isSelected())      selecionados.add(dados.rainhaMaeve);
+            if (cbNoir.isSelected())       selecionados.add(dados.blackNoir);
+            if (cbTremBala.isSelected())   selecionados.add(dados.tremBala);
+            if (cbMana.isSelected())       selecionados.add(dados.manaSabia);
+            if (cbProfundo.isSelected())   selecionados.add(dados.profundo);
 
             Herois[] arrayHerois = selecionados.toArray(new Herois[0]);
             Equipes equipeEnviada = new Equipes(arrayHerois);
@@ -335,5 +317,13 @@ public class Main {
 
         telaMissao.setVisible(true);
     }
-}
+
+    // CORRIGIDO: stub de telaResultados para evitar erro de compilação
+    public void telaResultados(Cenarios cenario, Equipes equipeEnviada) {
+        JOptionPane.showMessageDialog(null,
+                "Equipe enviada para: " + cenario.getDescricao() + "\nAguarde o resultado...",
+                "Missão em andamento",
+                JOptionPane.INFORMATION_MESSAGE);
+        fase();
+    }
 }
