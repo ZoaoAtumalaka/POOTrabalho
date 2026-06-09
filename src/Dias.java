@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class Dias {
     // DIAS = fases
+
     private ArrayList<Cenarios> cenariosFaceis;
     private ArrayList<Cenarios> cenariosMedios;
     private ArrayList<Cenarios> cenariosDificeis;
@@ -10,8 +11,14 @@ public class Dias {
     private Equipes equipeEnviada;
     private int culpadoFalha;
     private int missaoAtual;
-    private int[][] divisaoCenarios = {{2,2,2},{2,2,2},{2,2,2}};  // CORRIGIDO: int[][] ao invés de int[]{}
+    private int[][] divisaoCenarios = {
+            {4, 2, 0},   // dia 0 (fase 1): 4 fáceis + 2 médias
+            {0, 4, 2},   // dia 1 (fase 2): 4 médias + 3 difíceis
+            {0, 0, 3}    // dia 2 (fase 3): 4 difíceis
+    };
     private int diaAtual;
+
+
 
     // CONSTRUTOR
     public Dias() {
@@ -20,7 +27,7 @@ public class Dias {
         this.cenariosDificeis = new ArrayList<Cenarios>();
         this.culpadoFalha = 0;
         this.missaoAtual = 0;
-        this.diaAtual = 1;
+        this.diaAtual = 0;
 
 // CENARIOS FACEIS
         this.cenariosFaceis.add(new Cenarios("Resgatar gatinho cibernético na árvore", 5, 5, 5, 5, 10, 5, 10, 1, 10));
@@ -62,7 +69,9 @@ public class Dias {
         for (int i = 0; i < cenariosDificeis.size(); i++) {
             this.cenariosDificeis.get(i).aumentardificuldade();
         }
-        this.diaAtual++;
+        if (this.diaAtual < this.divisaoCenarios.length - 1) {
+            this.diaAtual++;
+        }
     }
 
     public void darXp(Equipes equipeEnviada, int xp) {
@@ -72,8 +81,6 @@ public class Dias {
     }
 
     public void executarMissao(Cenarios cenario, Equipes equipeEnviada) throws InterruptedException {
-        // TIMER IRADISSIMO ROCK N ROLL!!!!
-        Thread.sleep(30000);
 
         if (equipeEnviada.getGrupo().isEmpty()) {
             this.culpadoFalha = 0;
@@ -134,17 +141,24 @@ public class Dias {
 
     public Cenarios sortearCenario() {
         Random random = new Random();
-        // CORRIGIDO: nextInt(...) com parênteses, divisaoCenarios (com 's'), e return padrão
-        if (missaoAtual <= this.divisaoCenarios[diaAtual][0]) {
+
+        int qtdFaceis= divisaoCenarios[diaAtual][0];
+        int qtdMedias= divisaoCenarios[diaAtual][1];
+        int qtdDificeis= divisaoCenarios[diaAtual][2];
+
+        int limFacil = qtdFaceis; // 0 até limFacil-1
+        int limMedio= qtdFaceis + qtdMedias; // limFacil até limMedio-1
+        int limDificil= qtdFaceis + qtdMedias + qtdDificeis; // limMedio até limDificil-1
+
+        if (missaoAtual < limFacil) {
             return cenariosFaceis.get(random.nextInt(cenariosFaceis.size()));
-        } else if (missaoAtual <= this.divisaoCenarios[diaAtual][1] + this.divisaoCenarios[diaAtual][0]
-                && missaoAtual >= this.divisaoCenarios[diaAtual][0]) {
+        } else if (missaoAtual < limMedio) {
             return cenariosMedios.get(random.nextInt(cenariosMedios.size()));
-        } else if (missaoAtual <= this.divisaoCenarios[diaAtual][1] + this.divisaoCenarios[diaAtual][0] + this.divisaoCenarios[diaAtual][2]
-                && missaoAtual >= this.divisaoCenarios[diaAtual][1]) {
+        } else if (missaoAtual < limDificil) {
             return cenariosDificeis.get(random.nextInt(cenariosDificeis.size()));
         }
-        // CORRIGIDO: return padrão para evitar erro de compilação
+        if (qtdDificeis > 0)  return cenariosDificeis.get(random.nextInt(cenariosDificeis.size()));
+        if (qtdMedias   > 0)  return cenariosMedios.get(random.nextInt(cenariosMedios.size()));
         return cenariosFaceis.get(random.nextInt(cenariosFaceis.size()));
     }
 
@@ -162,5 +176,36 @@ public class Dias {
             case 9: return "Falha em um teste de Atributo";
             default: return "Culpado desconhecido";
         }
+    }
+
+    // GETTERS
+
+    public int getMissaoAtual() {
+        return missaoAtual;
+    }
+
+    public int getDiaAtual() {
+        return diaAtual;
+    }
+
+    // chama isso ao começar cada fase/dia (no início de fase(int dia))
+    public void resetarMissaoAtual() {
+        this.missaoAtual = 0;
+    }
+
+    // incrementa após cada missão ser aceita (no botão ATENDER do popup)
+    public void avancarMissao() {
+        this.missaoAtual++;
+    }
+
+    // fase() usa isso pra saber quando o dia acabou
+    public int totalMissoesDoDia() {
+        return divisaoCenarios[diaAtual][0]
+                + divisaoCenarios[diaAtual][1]
+                + divisaoCenarios[diaAtual][2];
+    }
+
+    public int[][] getDivisaoCenarios() {
+        return this.divisaoCenarios;
     }
 }

@@ -4,7 +4,12 @@ public class Equipes {
 
     private ArrayList<Herois> grupo;
 
-    public Equipes(CapitaoPatria capitaoPatria, LuzEstrela luzEstrela, RainhaMaeve rainhaMaeve, BlackNoir blackNoir, TremBala tremBala, ManaSabia manaSabia, Profundo profundo) {
+    // Construtor usado no Main (recebe array de heróis selecionados)
+    public Equipes(Herois[] herois) {
+        this.grupo = new ArrayList<>();
+        for (Herois h : herois) {
+            this.grupo.add(h);
+        }
     }
 
     // ESPECIAIS

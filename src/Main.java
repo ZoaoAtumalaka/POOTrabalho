@@ -10,22 +10,20 @@ import com.github.weisj.darklaf.theme.DarculaTheme;
 public class Main {
 
     private Equipes equipe;
-    private Dados dados;  // CORRIGIDO: instância de Dados para acessar 'dias' e heróis
+    private Dados dados;
+
+    private int totalMissoesDoDia(int dia) {
+        return dados.dias.getDivisaoCenarios()[dia][0]
+                + dados.dias.getDivisaoCenarios()[dia][1]
+                + dados.dias.getDivisaoCenarios()[dia][2];
+    }
 
     public static void main(String[] args){
         LafManager.install(new DarculaTheme());
         SwingUtilities.invokeLater(() -> {
             Main app = new Main();
             app.dados = new Dados();
-            app.equipe = new Equipes(
-                    app.dados.capitaoPatria,
-                    app.dados.luzEstrela,
-                    app.dados.rainhaMaeve,
-                    app.dados.blackNoir,
-                    app.dados.tremBala,
-                    app.dados.manaSabia,
-                    app.dados.profundo
-            );
+            app.equipe = new Equipes(new Herois[0]);
             app.menuPrincipal();
         });
     }
@@ -132,105 +130,182 @@ public class Main {
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         telaJogo.add(painelPrincipal);
 
-        JLabel labelImagem;
-        java.io.File arquivoImg = new java.io.File("Homelanderfirst.png");
-
-        if (arquivoImg.exists()) {
-            ImageIcon iconeOriginal = new ImageIcon("Homelanderfirst.png");
-            Image imagemRedimensionada = iconeOriginal.getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH);
-            ImageIcon iconeFinal = new ImageIcon(imagemRedimensionada);
-            labelImagem = new JLabel(iconeFinal);
-        } else {
-            labelImagem = new JLabel("ERRO: Imagem 'Homelanderfirst.png' não encontrada na raiz do projeto!");
-            labelImagem.setFont(new Font("Arial", Font.BOLD, 20));
-            labelImagem.setForeground(Color.RED);
-            labelImagem.setHorizontalAlignment(SwingConstants.CENTER);
-        }
-
+        // imagem começa vazia, trocarImagem() preenche logo abaixo
+        JLabel labelImagem = new JLabel();
+        labelImagem.setHorizontalAlignment(SwingConstants.CENTER);
         painelPrincipal.add(labelImagem, BorderLayout.CENTER);
 
         JPanel painelInferior = new JPanel(new BorderLayout());
         painelInferior.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
-        String textoDialogo1 = "TESTE TESTE TESTE TESTE - Uma crise foi detectada no centro de Nova York!";
-        JTextArea areaTexto = new JTextArea(textoDialogo1);
-        areaTexto.setFont(new Font("Consolas", Font.BOLD, 24));
+        JTextArea areaTexto = new JTextArea();
+        areaTexto.setFont(new Font("Consolas", Font.BOLD, 50));
         areaTexto.setLineWrap(true);
         areaTexto.setWrapStyleWord(true);
         areaTexto.setEditable(false);
         areaTexto.setBackground(painelPrincipal.getBackground());
 
-        painelInferior.add(areaTexto, BorderLayout.CENTER);
-
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButtonUIResource botaoPassarTexto = new JButtonUIResource("Próximo");
-        botaoPassarTexto.setFont(new Font("Arial", Font.BOLD, 26));
+        botaoPassarTexto.setFont(new Font("Arial", Font.BOLD, 50));
         painelBotoes.add(botaoPassarTexto);
 
+        painelInferior.add(areaTexto, BorderLayout.CENTER);
         painelInferior.add(painelBotoes, BorderLayout.SOUTH);
         painelPrincipal.add(painelInferior, BorderLayout.SOUTH);
 
-        String[][] dialogos = {
+        // cada entrada: { "texto do dialogo", "nome_da_imagem.png" }
+        String[][][] dialogos = {
                 // Dia 1
                 {
-                        "a",
-                        "Bem-vindo à Vought. Sou Madelyn Stillwell.",
-                        "Os Sete precisam de um gerenciador de missões.",
-                        "Você foi selecionado. Não nos decepcione."
+                        {"Bem-vindo à Vought. Sou Capitão Pátria! líder dos Sete!", "Homelanderfirst.png"},
+                        {"Voce é o novo gerenciador da equipe, não é?",              "Homelanderfirst.png"},
+                        {"Enfim, a cidade precisa de alguém qualificado",             "cidade.png"},
+                        {"Não nos decepcione.",                                       "Homelanderfirst.png"}
                 },
                 // Dia 2
                 {
-                        "Homelanderfirst.png",
-                        "Bom trabalho no primeiro dia.",
-                        "Mas as missões vão ficar mais difíceis.",
-                        "O Homelander está observando seu progresso."
+                        {"Você até que mandou bem. Parabens.",             "Homelanderfirst.png"},
+                        {"Bom trabalho no primeiro dia.",                  "Homelanderfirst.png"},
+                        {"Mas as missões vão ficar mais difíceis.",        "Homelanderfirst.png"},
+                        {"O Homelander está observando seu progresso.",    "Homelanderfirst.png"}
                 },
                 // Dia 3
                 {
-                        "Homelanderfirst.png",
-                        "Este é o dia decisivo.",
-                        "O futuro dos Sete está nas suas mãos."
+                        {"Este é o dia decisivo.",                   "Homelanderfirst.png"},
+                        {"O futuro dos Sete está nas suas mãos.",    "Homelanderfirst.png"}
                 },
                 // Dia 4 (FINAL)
                 {
-                        "Homelanderfirst.png",
-                        "ACABOU.",
-                        "TODOS MORRERAM.",
-                        "MUHAHAHHAHAHAHA."
+                        {"ACABOU.",           "Homelanderfirst.png"},
+                        {"TODOS MORRERAM.",   "Homelanderfirst.png"},
+                        {"MUHAHAHHAHAHAHA.",  "Homelanderfirst.png"}
                 }
         };
 
         int[] indice = {0};
 
-        areaTexto.setText(dialogos[dia][indice[0]]);
+        areaTexto.setText(dialogos[dia][0][0]);
+        trocarImagem(labelImagem, dialogos[dia][0][1]);
 
         botaoPassarTexto.addActionListener(e -> {
             indice[0]++;
             if (indice[0] < dialogos[dia].length) {
-                areaTexto.setText(dialogos[dia][indice[0]]);
+                areaTexto.setText(dialogos[dia][indice[0]][0]);
+                trocarImagem(labelImagem, dialogos[dia][indice[0]][1]);
             } else {
                 telaJogo.dispose();
-                missao();
+                fase(dia);
             }
         });
 
         telaJogo.setVisible(true);
     }
 
-    public void fase(){
-        // aqui onde vai ficar o timer entre missoes
+    private void trocarImagem(JLabel labelImagem, String nomeArquivo) {
+        java.io.File arquivo = new java.io.File(nomeArquivo);
+        if (arquivo.exists()) {
+            Image img = new ImageIcon(nomeArquivo).getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH);
+            labelImagem.setIcon(new ImageIcon(img));
+            labelImagem.setText("");
+        } else {
+            labelImagem.setIcon(null);
+            labelImagem.setText("erro: " + nomeArquivo + " não encontrado....");
+        }
     }
 
-    // CORRIGIDO: método único sem throws InterruptedException (o Timer já é assíncrono)
-    public void missao() {
+    public void fase(int dia) {
+        JFrame telaFase = new JFrame("DISPATCH - DIA " + (dia + 1));
+        telaFase.setSize(1920, 1080);
+        telaFase.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        telaFase.setLocationRelativeTo(null);
+        telaFase.setLayout(new BorderLayout());
+
+        // ── PAINEL ESQUERDO: heróis ──
+        JPanel painelHerois = new JPanel();
+        painelHerois.setPreferredSize(new Dimension(350, 1080));
+        painelHerois.setLayout(new BoxLayout(painelHerois, BoxLayout.Y_AXIS));
+        painelHerois.setBorder(BorderFactory.createTitledBorder("OS SETE"));
+
+        // ── PAINEL DIREITO: cidade com LayeredPane ──
+        JLayeredPane painelCidade = new JLayeredPane();
+        painelCidade.setPreferredSize(new Dimension(1570, 1080));
+
+        // imagem de fundo da cidade
+        JLabel imgCidade = new JLabel(new ImageIcon("cidade.png"));
+        imgCidade.setBounds(0, 0, 1570, 1080);
+        painelCidade.add(imgCidade, JLayeredPane.DEFAULT_LAYER);
+
+        telaFase.add(painelHerois, BorderLayout.WEST);
+        telaFase.add(painelCidade, BorderLayout.CENTER);
+        telaFase.setVisible(true);
+
+        // ── SPAWNER de missões ──
+        int[] missoesRestantes = { totalMissoesDoDia(dia) };
+        agendarProximaMissao(painelCidade, telaFase, dia, missoesRestantes);
+    }
+
+    private void agendarProximaMissao(JLayeredPane painelCidade, JFrame tela, int dia, int[] restantes) {
+        if (restantes[0] <= 0) {
+            // todas as missões do dia concluídas → próximo dia ou tela final
+            tela.dispose();
+            dialogo(dia + 1);
+            return;
+        }
+
+        int delayAleatorio = 3000 + (int)(Math.random() * 5000); // entre 3s e 8s
+
+        Timer timer = new Timer(delayAleatorio, e -> {
+            Cenarios cenario = dados.dias.sortearCenario();
+            mostrarPopupMissao(painelCidade, tela, cenario, dia, restantes);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void mostrarPopupMissao(JLayeredPane painelCidade, JFrame tela, Cenarios cenario, int dia, int[] restantes) {
+
+        int x = 50 + (int)(Math.random() * 1000);
+        int y = 50 + (int)(Math.random() * 700);
+
+        JPanel popup = new JPanel(new BorderLayout(5, 5));
+        popup.setBackground(new Color(20, 20, 20, 220));
+        popup.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        popup.setBounds(x, y, 400, 120);
+
+        JLabel titulo = new JLabel("⚠ CRISE DETECTADA!", SwingConstants.CENTER);
+        titulo.setForeground(Color.RED);
+        titulo.setFont(new Font("Arial", Font.BOLD, 14));
+
+        JLabel desc = new JLabel("<html>" + cenario.getDescricao() + "</html>", SwingConstants.CENTER);
+        desc.setForeground(Color.WHITE);
+        desc.setFont(new Font("Consolas", Font.PLAIN, 12));
+
+        JButton btnAtender = new JButton("ATENDER");
+        btnAtender.setBackground(new Color(180, 0, 0));
+        btnAtender.setForeground(Color.WHITE);
+        btnAtender.addActionListener(ev -> {
+            painelCidade.remove(popup);
+            painelCidade.repaint();
+            restantes[0]--;
+            missao(cenario, tela, painelCidade, dia, restantes);
+            agendarProximaMissao(painelCidade, tela, dia, restantes);
+        });
+
+        popup.add(titulo, BorderLayout.NORTH);
+        popup.add(desc, BorderLayout.CENTER);
+        popup.add(btnAtender, BorderLayout.SOUTH);
+
+        painelCidade.add(popup, JLayeredPane.POPUP_LAYER);
+        painelCidade.repaint();
+    }
+
+    public void missao(Cenarios cenario, JFrame telaFase, JLayeredPane painelCidade, int dia, int[] restantes) {
         JFrame telaMissao = new JFrame("Nova Crise Detectada!");
         telaMissao.setSize(1080, 720);
         telaMissao.setLocationRelativeTo(null);
-        telaMissao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        telaMissao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         telaMissao.setLayout(new BorderLayout(20, 20));
-
-        // CORRIGIDO: usando this.dados.dias para acessar o objeto Dias
-        Cenarios cenario = dados.dias.sortearCenario();
 
         JPanel painelSuperior = new JPanel(new BorderLayout());
         JTextArea infoCenario = new JTextArea("ALERTA DE CRISE: " + cenario.getDescricao() +
@@ -282,9 +357,9 @@ public class Main {
                 if (tempoRestante <= 0) {
                     ((Timer) e.getSource()).stop();
                     telaMissao.dispose();
-                    // CORRIGIDO: showMessageDialog (não showMessageLabel)
-                    JOptionPane.showMessageDialog(null, "TEMPO ESGOTADO! A missão falhou por falta de resposta.", "FALHA", JOptionPane.ERROR_MESSAGE);
-                    fase();
+                    JOptionPane.showMessageDialog(null,
+                            "TEMPO ESGOTADO! A missão falhou.",
+                            "FALHA", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -302,28 +377,24 @@ public class Main {
             if (cbMana.isSelected())       selecionados.add(dados.manaSabia);
             if (cbProfundo.isSelected())   selecionados.add(dados.profundo);
 
-            Herois[] arrayHerois = selecionados.toArray(new Herois[0]);
-            Equipes equipeEnviada = new Equipes(arrayHerois);
-
             telaMissao.dispose();
 
             if (selecionados.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Você não enviou ninguém! A missão falhou.");
-                fase();
             } else {
-                telaResultados(cenario, equipeEnviada);
+                Equipes equipeEnviada = new Equipes(selecionados.toArray(new Herois[0]));
+                telaResultados(cenario, equipeEnviada, dia);
             }
         });
 
         telaMissao.setVisible(true);
     }
 
-    // CORRIGIDO: stub de telaResultados para evitar erro de compilação
-    public void telaResultados(Cenarios cenario, Equipes equipeEnviada) {
+    public void telaResultados(Cenarios cenario, Equipes equipeEnviada, int dia) {
         JOptionPane.showMessageDialog(null,
                 "Equipe enviada para: " + cenario.getDescricao() + "\nAguarde o resultado...",
                 "Missão em andamento",
                 JOptionPane.INFORMATION_MESSAGE);
-        fase();
     }
+
 }

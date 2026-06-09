@@ -1,4 +1,4 @@
-public class Herois implements Acoes,Runnable{
+abstract public class Herois implements Acoes, Runnable, java.io.Serializable {
     private String nome;
     private double forca;
     private double velocidade;
@@ -52,12 +52,12 @@ public class Herois implements Acoes,Runnable{
 
     @Override
     public boolean darXp(int xp){
-        if (this.xp>=this.xpProximoNivel){
-            this.xp=0;
-            this.xpProximoNivel*=1.1;
-            return true;
+        this.xp += xp;
+        if (this.xp >= this.xpProximoNivel){
+            this.xp = 0;
+            this.xpProximoNivel *= 1.1;
+            return true; // subiu de nível
         }else {
-            this.xp+=xp;
             return false;
         }
     }
