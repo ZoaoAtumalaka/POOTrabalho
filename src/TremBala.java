@@ -2,7 +2,7 @@ public class TremBala extends Herois{
     private int coracao;
 
     public TremBala ( ){
-        super("Trem Bala",10,10,10,10,10);
+        super("Trem Bala",2,5,1,2,15);
         this.coracao = 100;
     }
 

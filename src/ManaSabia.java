@@ -2,7 +2,7 @@ public class ManaSabia extends Herois{
     private int fadigaMental;
 
     public ManaSabia( ){
-        super("Mana Sabia",10,10,10,10,10);
+        super("Mana Sabia",1,2,5,2,15);
         this.fadigaMental = 0;
     }
 

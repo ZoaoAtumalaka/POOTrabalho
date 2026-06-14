@@ -2,7 +2,7 @@ public class BlackNoir extends Herois {
     private int alucinacao;
 
     public BlackNoir (){
-        super("Black noir", 10,10,10,10,10);
+        super("Black noir", 3,1,1,5,15);
         this.alucinacao = 100;
     }
 

@@ -3,7 +3,7 @@ public class RainhaMaeve extends Herois {
 
     // METODO CONSTRUTOR
     public RainhaMaeve() {
-        super("Rainha Maeve", 10, 10, 10, 10, 10);
+        super("Rainha Maeve", 5, 1, 2, 2, 15);
         this.autoEstima = 100;
     }
 

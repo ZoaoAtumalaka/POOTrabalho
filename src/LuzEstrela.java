@@ -3,7 +3,7 @@ public class LuzEstrela extends Herois {
 
     // METODO CONSTRUTOR
     public LuzEstrela() {
-        super("Luz Estrela", 10, 10, 10, 10, 10);
+        super("Luz Estrela", 3, 3, 3, 1, 15);
         this.fotoluminescencia = 100;
     }
 

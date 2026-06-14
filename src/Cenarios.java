@@ -41,7 +41,6 @@ public class Cenarios {
     }
 
 
-
     // METODOS GET
 
     public String getDescricao() {

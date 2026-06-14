@@ -2,7 +2,7 @@ public class Profundo extends Herois{
     private int ansiedade;
 
     public Profundo ( ){
-        super("Profundo",10,10,10,10,10);
+        super("Profundo",3,3,1,3,15);
         this.ansiedade = 0;
     }
 

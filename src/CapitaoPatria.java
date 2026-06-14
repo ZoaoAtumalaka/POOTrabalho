@@ -3,7 +3,7 @@ class CapitaoPatria extends Herois {
 
     // METODO CONSTRUTOR
     public CapitaoPatria() {
-        super("Capitão Pátria", 10, 10, 10, 10, 10);
+        super("Capitão Pátria", 4, 4, 1, 4, 15);
         this.sanidade = 99;
     }
 
