@@ -78,12 +78,25 @@ public class Dias {
         }
     }
 
-    public void executarMissao(Cenarios cenario, Equipes equipeEnviada) throws InterruptedException {
+    public void executarMissao(Cenarios cenario, Equipes equipeEnviada) throws InterruptedException,EquipeExcesso,MembroDesmaiado,MembroMorto {
 
         if (equipeEnviada.getGrupo().isEmpty()) {
             this.culpadoFalha = 0;
             return;
+            
         } else {
+            if (cenario.getQuantidadeDeMembros()<equipeEnviada.getGrupo().size()){
+                throw new EquipeExcesso();
+            }
+            for (int i = 0; i < equipeEnviada.getGrupo().size(); i++) {
+                if (!equipeEnviada.getGrupo().get(i).verificarVida()) {
+                    throw new MembroMorto();
+                }
+                if (!equipeEnviada.getGrupo().get(i).verificarDescanso()){
+                    throw new MembroDesmaiado();
+                }
+            }
+
             // TIMER DE IDA MANEIRO!!!!!
             Thread.sleep(cenario.getTempoDeIda() * 1000L);
 
