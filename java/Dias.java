@@ -89,7 +89,7 @@ public class Dias {
                 throw new EquipeExcesso();
             }
             for (int i = 0; i < equipeEnviada.getGrupo().size(); i++) {
-                if (!equipeEnviada.getGrupo().get(i).verificarVida()) {
+                if (equipeEnviada.getGrupo().get(i).verificarVida()) {
                     throw new MembroMorto();
                 }
                 if (!equipeEnviada.getGrupo().get(i).verificarDescanso()){
