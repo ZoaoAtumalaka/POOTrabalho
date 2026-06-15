@@ -20,12 +20,19 @@ public class Dias implements Serializable {
     private int diaAtual;
     private ArrayList<Herois> heroisQueEvoluiram = new ArrayList<>();
 
+    public boolean verificarFalha(){
+        if (this.culpadoFalha<10){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
     // CONSTRUTOR
     public Dias() {
         this.cenariosFaceis = new ArrayList<Cenarios>();
         this.cenariosMedios = new ArrayList<Cenarios>();
         this.cenariosDificeis = new ArrayList<Cenarios>();
-        this.culpadoFalha = 0;
         this.missaoAtual = 0;
         this.diaAtual = 0;
 
