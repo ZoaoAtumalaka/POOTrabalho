@@ -9,7 +9,8 @@ public class Dados implements Serializable {
     public Profundo profundo;
     public RainhaMaeve rainhaMaeve;
     public Dias dias;
-    @Serial
+    public int falhas = 0;
+
     private static final long serialVersionUID = 1L;
     public Dados(){
         this.capitaoPatria = new CapitaoPatria();

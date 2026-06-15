@@ -10,7 +10,6 @@ import com.github.weisj.darklaf.theme.DarculaTheme;
 public class Main {
 
     private Dados dados;
-    private int falhas=0;
 
     private int totalMissoesDoDia(int dia) {
         return dados.dias.getDivisaoCenarios()[dia][0]
@@ -298,7 +297,40 @@ public class Main {
         telaCreditos.add(painelPrincipal);
         telaCreditos.setVisible(true);
     }
+    public void telaGameOver() {
+        JFrame telaGO = new JFrame("GAME OVER");
+        telaGO.setSize(1920, 1080);
+        telaGO.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        telaGO.setLocationRelativeTo(null);
 
+        JPanel painel = new JPanel(new BorderLayout());
+        painel.setBorder(BorderFactory.createEmptyBorder(100, 150, 100, 150));
+
+        JTextArea titulo = new JTextArea("GAME OVER\n\nVocê falhou em 3 missões.\nO Homelander não está satisfeito...");
+        titulo.setFont(new Font("Consolas", Font.BOLD, 50));
+        titulo.setEditable(false);
+        titulo.setLineWrap(true);
+        titulo.setWrapStyleWord(true);
+        titulo.setBackground(painel.getBackground());
+        titulo.setForeground(Color.RED);
+
+        JButton botaoMenu = new JButton("Voltar ao Menu Principal");
+        botaoMenu.setFont(new Font("Arial", Font.BOLD, 30));
+        botaoMenu.addActionListener(e -> {
+            telaGO.dispose();
+            dados = new Dados(); // reseta tudo, incluindo falhas (que começa em 0)
+            menuPrincipal();
+        });
+
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        painelBotoes.add(botaoMenu);
+
+        painel.add(titulo, BorderLayout.CENTER);
+        painel.add(painelBotoes, BorderLayout.SOUTH);
+
+        telaGO.add(painel);
+        telaGO.setVisible(true);
+    }
     public void fase(int dia) {
         JFrame telaFase = new JFrame("DISPATCH - DIA " + (dia + 1));
         telaFase.setSize(1920, 1080);
@@ -580,6 +612,14 @@ public class Main {
                     JOptionPane.showMessageDialog(null,
                             "TEMPO ESGOTADO! A missão falhou.",
                             "FALHA", JOptionPane.ERROR_MESSAGE);
+                    dados.falhas++;
+                    if (dados.falhas >= 3) {
+                        telaGameOver();
+                        return;
+                    }
+                    JOptionPane.showMessageDialog(null,
+                            "⚠ Falhas acumuladas: " + dados.falhas + "/3",
+                            "Atenção!", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -600,6 +640,14 @@ public class Main {
 
             if (selecionados.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Você não enviou ninguém! A missão falhou.");
+                dados.falhas++;
+                if (dados.falhas >= 3) {
+                    telaGameOver();
+                    return;
+                }
+                JOptionPane.showMessageDialog(null,
+                        "⚠ Falhas acumuladas: " + dados.falhas + "/3",
+                        "Atenção!", JOptionPane.WARNING_MESSAGE);
             } else {
                 Equipes equipeEnviada = new Equipes(selecionados.toArray(new Herois[0]));
                 timer.stop();
@@ -735,7 +783,16 @@ public class Main {
                 "Missão: " + cenario.getDescricao() + "\n\n" + mensagemResultado,
                 sucesso ? "Missão Concluída" : "Missão Falhou",
                 sucesso ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
-
+        if (!sucesso) {
+            dados.falhas++;
+            if (dados.falhas >= 3) {
+                telaGameOver();
+                return;
+            }
+            JOptionPane.showMessageDialog(null,
+                    "⚠ Falhas acumuladas: " + dados.falhas + "/3",
+                    "Atenção!", JOptionPane.WARNING_MESSAGE);
+        }
         if (sucesso) {
             String[] opcoes = {"Forca", "Velocidade", "Inteligencia", "Defesa"};
             for (Herois h : dados.dias.getHeroisQueEvoluiram()) {
