@@ -10,6 +10,7 @@ import com.github.weisj.darklaf.theme.DarculaTheme;
 public class Main {
 
     private Dados dados;
+    private int falhas=0;
 
     private int totalMissoesDoDia(int dia) {
         return dados.dias.getDivisaoCenarios()[dia][0]
@@ -416,6 +417,21 @@ public class Main {
                     System.out.println("Erro de continuação");
 
                     return;
+                }finally {
+                    if (dados.dias.verificarFalha()){
+                        System.out.println("Falou");
+                        String culpadoFalha=dados.dias.motivoFalha();
+                        switch (culpadoFalha) {
+                            case "Capitão Pátria falhou":JOptionPane.showMessageDialog(null, "Capitão Patria falhou!");
+                            case "Luz Estrela falhou":JOptionPane.showMessageDialog(null, "Luz Estrela falhou!");
+                            case "Rainha Maeve falhou":JOptionPane.showMessageDialog(null, "Rainha Maeve falhou!");
+                            case "Black Noir falhou":JOptionPane.showMessageDialog(null, "Black Noir falhou!");
+                            case "Trem Bala falhou":JOptionPane.showMessageDialog(null, "Trem Bala falhou!");
+                            case "Mana Sábia falhou":JOptionPane.showMessageDialog(null, "Mana Sabia falhou!");
+                            case "Profundo falhou":JOptionPane.showMessageDialog(null, "Profundo falhou!");
+                        }
+
+                    }
                 }
                 telaResultados(cenario, equipeEnviada, dia);
             }
