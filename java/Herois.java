@@ -29,6 +29,9 @@ abstract public class Herois implements Acoes, Runnable, java.io.Serializable {
     public boolean verificarVida(){
         return this.morto;
     }
+    public boolean verificarDescanso(){
+        return this.acordado;
+    }
 
     @Override
     public double[] executarMissao(){

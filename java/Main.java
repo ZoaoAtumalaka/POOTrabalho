@@ -9,7 +9,6 @@ import com.github.weisj.darklaf.theme.DarculaTheme;
 
 public class Main {
 
-    private Equipes equipe;
     private Dados dados;
 
     private int totalMissoesDoDia(int dia) {
@@ -23,7 +22,6 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             Main app = new Main();
             app.dados = new Dados();
-            app.equipe = new Equipes(new Herois[0]);
             app.menuPrincipal();
         });
     }
@@ -366,7 +364,6 @@ public class Main {
         timer.start();
 
         btnEnviar.addActionListener(e -> {
-            timer.stop();
 
             ArrayList<Herois> selecionados = new ArrayList<>();
             if (cbCapitao.isSelected())    selecionados.add(dados.capitaoPatria);
@@ -383,7 +380,24 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Você não enviou ninguém! A missão falhou.");
             } else {
                 Equipes equipeEnviada = new Equipes(selecionados.toArray(new Herois[0]));
+                try {
+                    dados.dias.executarMissao(cenario, equipeEnviada);
+                }catch (MembroMorto es){
+                    JOptionPane.showMessageDialog(null, es.getMessage());
+                    return;
+                }catch (MembroDesmaiado es){
+                    JOptionPane.showMessageDialog(null, es.getMessage());
+                    return;
+                }catch (EquipeExcesso es){
+                    JOptionPane.showMessageDialog(null, es.getMessage());
+                    return;
+                }catch (InterruptedException es){
+                    System.out.println(es.getMessage());
+                    System.out.println("Erro de continuação");
+                    return;
+                }
                 telaResultados(cenario, equipeEnviada, dia);
+                timer.stop();
             }
         });
 
