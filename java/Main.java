@@ -46,26 +46,42 @@ public class Main {
         areaTexto.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
         JButton botaoIniciar = new JButton("Iniciar");
-        JButton botaoSair = new JButton("Sair");
-        JButton botaoInfo = new JButton("Informações");
         botaoIniciar.setFont(new Font("Arial", Font.BOLD, 30));
-        botaoInfo.setFont(new Font("Arial", Font.BOLD, 30));
+
+        boolean temSave = new java.io.File("save.ser").exists();
+        JButton botaoContinuar = new JButton("Continuar");
+        botaoContinuar.setFont(new Font("Arial", Font.BOLD, 30));
+        botaoContinuar.setEnabled(temSave);
+
+        JButton botaoSair = new JButton("Sair");
         botaoSair.setFont(new Font("Arial", Font.BOLD, 30));
+
+        JButton botaoInfo = new JButton("Informações");
+        botaoInfo.setFont(new Font("Arial", Font.BOLD, 30));
+
 
         botaoIniciar.addActionListener(e -> {
             telaMenu.dispose();
             dialogo(0);
         });
 
+        botaoContinuar.addActionListener(e ->{
+            telaMenu.dispose();
+            dados = new Dados().recuperar();
+            fase(dados.dias.getDiaAtual());
+        });
+        botaoSair.addActionListener(e -> System.exit(0));
+
         botaoInfo.addActionListener(e -> {
             telaMenu.dispose();
             ajuda();
         });
 
-        botaoSair.addActionListener(e -> System.exit(0));
 
         painelBotoes.add(botaoIniciar);
+        painelBotoes.add(botaoContinuar);
         painelBotoes.add(botaoInfo);
         painelBotoes.add(botaoSair);
 
@@ -249,6 +265,8 @@ public class Main {
         if (restantes[0] <= 0) {
             // todas as missões do dia concluídas → próximo dia ou tela final
             tela.dispose();
+            dados.dias.passarDia();
+            dados.salvar();
             dialogo(dia + 1);
             return;
         }
@@ -261,6 +279,7 @@ public class Main {
         });
         timer.setRepeats(false);
         timer.start();
+
     }
 
     private void mostrarPopupMissao(JLayeredPane painelCidade, JFrame tela, Cenarios cenario, int dia, int[] restantes) {
@@ -282,7 +301,7 @@ public class Main {
         desc.setFont(new Font("Consolas", Font.PLAIN, 12));
 
         JButton btnAtender = new JButton("ATENDER");
-        btnAtender.setBackground(new Color(180, 0, 0));
+        btnAtender.setBackground(new Color(212, 80, 80));
         btnAtender.setForeground(Color.WHITE);
         btnAtender.addActionListener(ev -> {
             painelCidade.remove(popup);
@@ -395,6 +414,9 @@ public class Main {
                 "Equipe enviada para: " + cenario.getDescricao() + "\nAguarde o resultado...",
                 "Missão em andamento",
                 JOptionPane.INFORMATION_MESSAGE);
+
+
+        dados.salvar();
     }
 
 }

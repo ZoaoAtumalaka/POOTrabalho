@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Equipes {
+public class Equipes implements Serializable {
 
     private ArrayList<Herois> grupo;
 

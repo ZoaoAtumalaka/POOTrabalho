@@ -1,4 +1,6 @@
-public class Cenarios {
+import java.io.Serializable;
+
+public class Cenarios implements Serializable {
     // Cenario = missão
 
     // ATRIBUTOS

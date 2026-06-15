@@ -32,7 +32,7 @@ public class Dias {
         this.cenariosFaceis.add(new Cenarios("Ajudar Velho Pucrson: O sumiço da dentadura", 1, 1, 3, 1, 3, 4, 3, 1, 100));
         this.cenariosFaceis.add(new Cenarios("Recuperar Wi-Fi do bar local", 1, 1, 2, 1, 1, 2, 1, 1, 100));
         this.cenariosFaceis.add(new Cenarios("Espantar pombos mutantes da praça", 2, 2, 1, 2, 2, 3, 2, 1, 100));
-        this.cenariosFaceis.add(new Cenarios("Entregar pizza fria na casa branca", 1, 4, 1, 1, 4, 1, 4, 1, 100)); // Perfeito para o Trem Bala
+        this.cenariosFaceis.add(new Cenarios("Entregar pizza fria na casa branca", 1, 4, 1, 1, 4, 1, 4, 1, 100));
         this.cenariosFaceis.add(new Cenarios("Desativar despertador barulhento da senhora de idade", 1, 2, 2, 1, 1, 2, 1, 1, 100));
         this.cenariosFaceis.add(new Cenarios("Encontrar os óculos do prefeito", 1, 1, 3, 1, 2, 4, 2, 1, 100));
         this.cenariosFaceis.add(new Cenarios("Limpar gosma verde dos esgotos", 3, 1, 1, 3, 3, 5, 3, 1, 100));
