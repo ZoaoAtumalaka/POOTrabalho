@@ -42,6 +42,24 @@ public class Equipes implements Serializable {
         }
     }
 
+    public void descansarPorCodigo(int codigo){
+        for (Herois heroi : grupo) {
+            boolean ehAlvo =
+                    (codigo == 1 && heroi instanceof CapitaoPatria) ||
+                            (codigo == 2 && heroi instanceof LuzEstrela) ||
+                            (codigo == 3 && heroi instanceof RainhaMaeve) ||
+                            (codigo == 4 && heroi instanceof BlackNoir) ||
+                            (codigo == 5 && heroi instanceof TremBala) ||
+                            (codigo == 6 && heroi instanceof ManaSabia) ||
+                            (codigo == 7 && heroi instanceof Profundo);
+
+            if (ehAlvo) {
+                heroi.descansar();
+                break;
+            }
+        }
+    }
+
     public ArrayList<Herois> getGrupo() {
         return grupo;
     }

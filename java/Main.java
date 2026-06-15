@@ -209,7 +209,12 @@ public class Main {
                 trocarImagem(labelImagem, dialogos[dia][indice[0]][1]);
             } else {
                 telaJogo.dispose();
-                fase(dia);
+                if (dia >= dialogos.length - 1) {
+                    // último diálogo (pós última fase) → tela de créditos
+                    telaCreditos();
+                } else {
+                    fase(dia);
+                }
             }
         });
 
@@ -219,13 +224,79 @@ public class Main {
     private void trocarImagem(JLabel labelImagem, String nomeArquivo) {
         java.io.File arquivo = new java.io.File(nomeArquivo);
         if (arquivo.exists()) {
-            Image img = new ImageIcon(nomeArquivo).getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH);
+            ImageIcon original = new ImageIcon(nomeArquivo);
+            int largOriginal = original.getIconWidth();
+            int altOriginal = original.getIconHeight();
+
+            int alturaMax = 600;
+            int larguraMax = 600;
+
+            double escala = Math.min((double) larguraMax / largOriginal, (double) alturaMax / altOriginal);
+            int novaLargura = (int) (largOriginal * escala);
+            int novaAltura = (int) (altOriginal * escala);
+
+            Image img = original.getImage().getScaledInstance(novaLargura, novaAltura, Image.SCALE_SMOOTH);
             labelImagem.setIcon(new ImageIcon(img));
             labelImagem.setText("");
         } else {
             labelImagem.setIcon(null);
             labelImagem.setText("erro: " + nomeArquivo + " não encontrado....");
         }
+    }
+
+    public void telaCreditos() {
+        JFrame telaCreditos = new JFrame("DISPATCH - FIM DE JOGO");
+        telaCreditos.setSize(1920, 1080);
+        telaCreditos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        telaCreditos.setLocationRelativeTo(null);
+
+        JPanel painelPrincipal = new JPanel(new BorderLayout());
+        painelPrincipal.setBorder(BorderFactory.createEmptyBorder(100, 150, 100, 150));
+
+        JTextArea areaTitulo = new JTextArea("FIM DE JOGO\n\nDISPATCH: THE BOYS");
+        areaTitulo.setFont(new Font("Consolas", Font.BOLD, 50));
+        areaTitulo.setEditable(false);
+        areaTitulo.setLineWrap(true);
+        areaTitulo.setWrapStyleWord(true);
+        areaTitulo.setBackground(painelPrincipal.getBackground());
+        areaTitulo.setForeground(Color.RED);
+
+        JTextArea areaCreditos = new JTextArea(
+                "Obrigado por jogar!\n\n" +
+                        "CRÉDITOS\n" +
+                        "Desenvolvimento: João Kaudy, Gustavo Gawlak, Arom\n" +
+                        "Projeto de Programação Orientada a Objetos\n\n" +
+                        "Personagens baseados na série \"The Boys\"."
+        );
+        areaCreditos.setFont(new Font("Consolas", Font.PLAIN, 24));
+        areaCreditos.setEditable(false);
+        areaCreditos.setLineWrap(true);
+        areaCreditos.setWrapStyleWord(true);
+        areaCreditos.setBackground(painelPrincipal.getBackground());
+
+        JPanel painelTextos = new JPanel();
+        painelTextos.setLayout(new BoxLayout(painelTextos, BoxLayout.Y_AXIS));
+        painelTextos.add(areaTitulo);
+        painelTextos.add(Box.createRigidArea(new Dimension(0, 40)));
+        painelTextos.add(areaCreditos);
+
+        JButton botaoMenu = new JButton("Voltar ao Menu Principal");
+        botaoMenu.setFont(new Font("Arial", Font.BOLD, 30));
+        botaoMenu.addActionListener(e -> {
+            telaCreditos.dispose();
+            // reinicia os dados para uma nova partida
+            dados = new Dados();
+            menuPrincipal();
+        });
+
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        painelBotoes.add(botaoMenu);
+
+        painelPrincipal.add(painelTextos, BorderLayout.CENTER);
+        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+
+        telaCreditos.add(painelPrincipal);
+        telaCreditos.setVisible(true);
     }
 
     public void fase(int dia) {
@@ -237,9 +308,15 @@ public class Main {
 
         // ── PAINEL ESQUERDO: heróis ──
         JPanel painelHerois = new JPanel();
-        painelHerois.setPreferredSize(new Dimension(350, 1080));
         painelHerois.setLayout(new BoxLayout(painelHerois, BoxLayout.Y_AXIS));
         painelHerois.setBorder(BorderFactory.createTitledBorder("OS SETE"));
+
+        atualizarPainelHerois(painelHerois);
+
+        JScrollPane scrollHerois = new JScrollPane(painelHerois);
+        scrollHerois.setPreferredSize(new Dimension(350, 1080));
+        scrollHerois.setBorder(BorderFactory.createEmptyBorder());
+        scrollHerois.getVerticalScrollBar().setUnitIncrement(16);
 
         // ── PAINEL DIREITO: cidade com LayeredPane ──
         JLayeredPane painelCidade = new JLayeredPane();
@@ -250,18 +327,121 @@ public class Main {
         imgCidade.setBounds(0, 0, 1570, 1080);
         painelCidade.add(imgCidade, JLayeredPane.DEFAULT_LAYER);
 
-        telaFase.add(painelHerois, BorderLayout.WEST);
+        telaFase.add(scrollHerois, BorderLayout.WEST);
         telaFase.add(painelCidade, BorderLayout.CENTER);
         telaFase.setVisible(true);
 
         // ── SPAWNER de missões ──
         int[] missoesRestantes = { totalMissoesDoDia(dia) };
-        agendarProximaMissao(painelCidade, telaFase, dia, missoesRestantes);
+        agendarProximaMissao(painelCidade, telaFase, dia, missoesRestantes, painelHerois);
     }
 
-    private void agendarProximaMissao(JLayeredPane painelCidade, JFrame tela, int dia, int[] restantes) {
+    private void atualizarPainelHerois(JPanel painelHerois) {
+        painelHerois.removeAll();
+
+        Herois[] equipe = {
+                dados.capitaoPatria,
+                dados.luzEstrela,
+                dados.rainhaMaeve,
+                dados.blackNoir,
+                dados.tremBala,
+                dados.manaSabia,
+                dados.profundo
+        };
+
+        for (Herois heroi : equipe) {
+            painelHerois.add(criarCartaoHeroi(heroi));
+            painelHerois.add(Box.createRigidArea(new Dimension(0, 8)));
+        }
+
+        painelHerois.add(Box.createVerticalGlue());
+
+        painelHerois.revalidate();
+        painelHerois.repaint();
+    }
+
+    private JPanel criarCartaoHeroi(Herois heroi) {
+        JPanel cartao = new JPanel();
+        cartao.setLayout(new BoxLayout(cartao, BoxLayout.Y_AXIS));
+        cartao.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(6, 8, 6, 8),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(90, 90, 90), 1, true),
+                        BorderFactory.createEmptyBorder(8, 10, 8, 10)
+                )
+        ));
+        cartao.setAlignmentX(Component.LEFT_ALIGNMENT);
+        cartao.setMaximumSize(new Dimension(330, 200));
+
+        boolean morto = heroi.verificarVida();
+        boolean acordado = heroi.verificarDescanso();
+
+        // status: vivo/morto e acordado/descansando
+        String status;
+        Color corStatus;
+        if (morto) {
+            status = "☠ MORTO";
+            corStatus = new Color(220, 60, 60);
+        } else if (!acordado) {
+            status = "💤 DESCANSANDO";
+            corStatus = new Color(220, 180, 60);
+        } else {
+            status = "✔ DISPONÍVEL";
+            corStatus = new Color(80, 200, 120);
+        }
+
+        JLabel nome = new JLabel(heroi.getNome());
+        nome.setFont(new Font("Arial", Font.BOLD, 18));
+        nome.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel statusLabel = new JLabel(status);
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 13));
+        statusLabel.setForeground(corStatus);
+        statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        cartao.add(nome);
+        cartao.add(statusLabel);
+        cartao.add(Box.createRigidArea(new Dimension(0, 6)));
+
+        // atributos: forca, velocidade, inteligencia, defesa
+        double[] atributos = heroi.getAtributos();
+        String[] nomesAtributos = {"Força", "Velocidade", "Inteligência", "Defesa"};
+
+        JPanel painelAtributos = new JPanel(new GridLayout(2, 2, 6, 2));
+        painelAtributos.setAlignmentX(Component.LEFT_ALIGNMENT);
+        painelAtributos.setOpaque(false);
+        for (int i = 0; i < atributos.length; i++) {
+            JLabel atributoLabel = new JLabel(nomesAtributos[i] + ": " + String.format("%.1f", atributos[i]));
+            atributoLabel.setFont(new Font("Consolas", Font.PLAIN, 12));
+            painelAtributos.add(atributoLabel);
+        }
+        cartao.add(painelAtributos);
+        cartao.add(Box.createRigidArea(new Dimension(0, 6)));
+
+        // barra de XP
+        int xp = heroi.getXp();
+        int xpProximo = heroi.getXpProximoNivel();
+        int progresso = xpProximo > 0 ? (int) (100.0 * xp / xpProximo) : 0;
+
+        JProgressBar barraXp = new JProgressBar(0, 100);
+        barraXp.setValue(progresso);
+        barraXp.setStringPainted(true);
+        barraXp.setString("XP: " + xp + " / " + xpProximo);
+        barraXp.setAlignmentX(Component.LEFT_ALIGNMENT);
+        barraXp.setMaximumSize(new Dimension(310, 18));
+
+        cartao.add(barraXp);
+
+        return cartao;
+    }
+
+    private void agendarProximaMissao(JLayeredPane painelCidade, JFrame tela, int dia, int[] restantes, JPanel painelHerois) {
         if (restantes[0] <= 0) {
-            // todas as missões do dia concluídas → próximo dia ou tela final
+            JOptionPane.showMessageDialog(tela,
+                    "Todas as missões do dia foram concluídas!",
+                    "DIA CONCLUÍDO",
+                    JOptionPane.INFORMATION_MESSAGE);
+
             tela.dispose();
             dados.dias.passarDia();
             dados.salvar();
@@ -273,14 +453,14 @@ public class Main {
 
         Timer timer = new Timer(delayAleatorio, e -> {
             Cenarios cenario = dados.dias.sortearCenario();
-            mostrarPopupMissao(painelCidade, tela, cenario, dia, restantes);
+            mostrarPopupMissao(painelCidade, tela, cenario, dia, restantes, painelHerois);
         });
         timer.setRepeats(false);
         timer.start();
 
     }
 
-    private void mostrarPopupMissao(JLayeredPane painelCidade, JFrame tela, Cenarios cenario, int dia, int[] restantes) {
+    private void mostrarPopupMissao(JLayeredPane painelCidade, JFrame tela, Cenarios cenario, int dia, int[] restantes, JPanel painelHerois) {
 
         int x = 50 + (int)(Math.random() * 1000);
         int y = 50 + (int)(Math.random() * 700);
@@ -299,14 +479,14 @@ public class Main {
         desc.setFont(new Font("Consolas", Font.PLAIN, 12));
 
         JButton btnAtender = new JButton("ATENDER");
-        btnAtender.setBackground(new Color(212, 80, 80));
+        btnAtender.setBackground(new Color(255, 0, 0));
         btnAtender.setForeground(Color.WHITE);
         btnAtender.addActionListener(ev -> {
             painelCidade.remove(popup);
             painelCidade.repaint();
             restantes[0]--;
-            missao(cenario, tela, painelCidade, dia, restantes);
-            agendarProximaMissao(painelCidade, tela, dia, restantes);
+            missao(cenario, tela, painelCidade, dia, restantes, painelHerois);
+            agendarProximaMissao(painelCidade, tela, dia, restantes, painelHerois);
         });
 
         popup.add(titulo, BorderLayout.NORTH);
@@ -317,14 +497,18 @@ public class Main {
         painelCidade.repaint();
     }
 
-    public void missao(Cenarios cenario, JFrame telaFase, JLayeredPane painelCidade, int dia, int[] restantes) {
+    public void missao(Cenarios cenario, JFrame telaFase, JLayeredPane painelCidade, int dia, int[] restantes, JPanel painelHeroisLateral) {
         JFrame telaMissao = new JFrame("Nova Crise Detectada!");
         telaMissao.setSize(1080, 720);
         telaMissao.setLocationRelativeTo(null);
         telaMissao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         telaMissao.setLayout(new BorderLayout(20, 20));
 
-        JPanel painelSuperior = new JPanel(new BorderLayout());
+        JPanel painelSuperior = new JPanel();
+        painelSuperior.setLayout(new BoxLayout(painelSuperior, BoxLayout.Y_AXIS));
+        painelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JPanel painelTopo = new JPanel(new BorderLayout());
         JTextArea infoCenario = new JTextArea("ALERTA DE CRISE: " + cenario.getDescricao() +
                 "\nTempo para resposta: 30 segundos!");
         infoCenario.setFont(new Font("Consolas", Font.BOLD, 20));
@@ -334,12 +518,31 @@ public class Main {
         labelTempo.setFont(new Font("Arial", Font.BOLD, 40));
         labelTempo.setForeground(Color.RED);
 
-        painelSuperior.add(infoCenario, BorderLayout.CENTER);
-        painelSuperior.add(labelTempo, BorderLayout.EAST);
+        painelTopo.add(infoCenario, BorderLayout.CENTER);
+        painelTopo.add(labelTempo, BorderLayout.EAST);
+
+        // ── PAINEL DE DETALHES DA MISSÃO ──
+        JTextArea infoDetalhes = new JTextArea(
+                "Máximo de heróis na equipe: " + cenario.getQuantidadeDeMembros() + "\n" +
+                        "Atributos necessários: " + cenario.getAtributosNecessarios()
+        );
+        infoDetalhes.setFont(new Font("Consolas", Font.PLAIN, 16));
+        infoDetalhes.setEditable(false);
+        infoDetalhes.setLineWrap(true);
+        infoDetalhes.setWrapStyleWord(true);
+        infoDetalhes.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Informações da Missão"),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
+        painelSuperior.add(painelTopo);
+        painelSuperior.add(Box.createRigidArea(new Dimension(0, 10)));
+        painelSuperior.add(infoDetalhes);
+
         telaMissao.add(painelSuperior, BorderLayout.NORTH);
 
-        JPanel painelHerois = new JPanel(new GridLayout(3, 3, 10, 10));
-        painelHerois.setBorder(BorderFactory.createTitledBorder("Selecione a Equipe"));
+        JPanel painelSelecao = new JPanel(new GridLayout(3, 3, 10, 10));
+        painelSelecao.setBorder(BorderFactory.createTitledBorder("Selecione a Equipe"));
 
         JCheckBox cbCapitao    = new JCheckBox("Capitão Pátria");
         JCheckBox cbLuzEstrela = new JCheckBox("Luz Estrela");
@@ -349,15 +552,15 @@ public class Main {
         JCheckBox cbMana       = new JCheckBox("Mana Sábia");
         JCheckBox cbProfundo   = new JCheckBox("Profundo");
 
-        painelHerois.add(cbCapitao);
-        painelHerois.add(cbLuzEstrela);
-        painelHerois.add(cbMaeve);
-        painelHerois.add(cbNoir);
-        painelHerois.add(cbTremBala);
-        painelHerois.add(cbMana);
-        painelHerois.add(cbProfundo);
+        painelSelecao.add(cbCapitao);
+        painelSelecao.add(cbLuzEstrela);
+        painelSelecao.add(cbMaeve);
+        painelSelecao.add(cbNoir);
+        painelSelecao.add(cbTremBala);
+        painelSelecao.add(cbMana);
+        painelSelecao.add(cbProfundo);
 
-        telaMissao.add(painelHerois, BorderLayout.CENTER);
+        telaMissao.add(painelSelecao, BorderLayout.CENTER);
 
         JButton btnEnviar = new JButton("ENVIAR EQUIPE");
         btnEnviar.setFont(new Font("Arial", Font.BOLD, 24));
@@ -399,38 +602,126 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Você não enviou ninguém! A missão falhou.");
             } else {
                 Equipes equipeEnviada = new Equipes(selecionados.toArray(new Herois[0]));
-                try {
-                    timer.stop();
-                    dados.dias.executarMissao(cenario, equipeEnviada);
-                }catch (MembroMorto es){
-                    JOptionPane.showMessageDialog(null, es.getMessage());
-                    return;
-                }catch (MembroDesmaiado es){
-                    JOptionPane.showMessageDialog(null, es.getMessage());
-                    return;
-                }catch (EquipeExcesso es){
-                    JOptionPane.showMessageDialog(null, es.getMessage());
-                    return;
-                }catch (InterruptedException es){
-                    System.out.println(es.getMessage());
-                    System.out.println("Erro de continuação");
+                timer.stop();
 
+                try {
+                    if (cenario.getQuantidadeDeMembros() < equipeEnviada.getGrupo().size()) {
+                        throw new EquipeExcesso();
+                    }
+                    for (Herois h : equipeEnviada.getGrupo()) {
+                        if (h.verificarVida()) {
+                            throw new MembroMorto();
+                        }
+                        if (!h.verificarDescanso()) {
+                            throw new MembroDesmaiado();
+                        }
+                    }
+                } catch (MembroMorto | MembroDesmaiado | EquipeExcesso es) {
+                    JOptionPane.showMessageDialog(null, es.getMessage());
                     return;
                 }
-                telaResultados(cenario, equipeEnviada, dia);
+
+                executarMissaoComPopup(cenario, equipeEnviada, dia, painelHeroisLateral, telaFase);
             }
         });
 
         telaMissao.setVisible(true);
     }
 
-    public void telaResultados(Cenarios cenario, Equipes equipeEnviada, int dia) {
+    private void executarMissaoComPopup(Cenarios cenario, Equipes equipeEnviada, int dia, JPanel painelHeroisLateral, JFrame telaFase) {
+
+        JDialog dialogoEspera = new JDialog(telaFase, "Aguarde", Dialog.ModalityType.APPLICATION_MODAL);
+        dialogoEspera.setUndecorated(true);
+        dialogoEspera.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+        JPanel painelEspera = new JPanel();
+        painelEspera.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.RED, 2),
+                BorderFactory.createEmptyBorder(30, 50, 30, 50)
+        ));
+        JLabel labelEspera = new JLabel("MISSÃO SENDO REALIZADA...");
+        labelEspera.setFont(new Font("Consolas", Font.BOLD, 24));
+        painelEspera.add(labelEspera);
+
+        dialogoEspera.getContentPane().add(painelEspera);
+        dialogoEspera.pack();
+        dialogoEspera.setLocationRelativeTo(telaFase);
+
+        // Guarda se a missão foi bem-sucedida para usar no done()
+        boolean[] sucessoMissao = {false};
+
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                try {
+                    dados.dias.executarMissao(cenario, equipeEnviada);
+                    // Se chegou aqui sem exceção, verificamos o resultado real:
+                    // missão é sucesso se nenhum herói da equipe está morto e culpadoFalha é 9 (falha de atributo) ou não houve falha
+                    // culpadoFalha == -1 significa sucesso
+                    sucessoMissao[0] = dados.dias.getCulpadoFalha() == -1;
+                } catch (InterruptedException es) {
+                    System.out.println("Erro de continuação: " + es.getMessage());
+                } catch (MembroMorto | MembroDesmaiado | EquipeExcesso es) {
+                    System.out.println(es.getMessage());
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                dialogoEspera.dispose();
+
+                // Se missão foi bem-sucedida, inicia descanso assíncrono para todos da equipe
+                if (sucessoMissao[0]) {
+                    for (Herois h : equipeEnviada.getGrupo()) {
+                        h.descansarAsync();
+                    }
+                    // Atualiza a UI periodicamente enquanto heróis descansam
+                    iniciarAtualizacaoPeriodica(painelHeroisLateral, equipeEnviada);
+                }
+
+                telaResultados(cenario, equipeEnviada, dia, painelHeroisLateral, telaFase, sucessoMissao[0]);
+            }
+        };
+
+        worker.execute();
+        dialogoEspera.setVisible(true);
+    }
+
+    private void iniciarAtualizacaoPeriodica(JPanel painelHeroisLateral, Equipes equipeEnviada) {
+        Timer atualizador = new Timer(1000, null);
+        atualizador.addActionListener(e -> {
+            atualizarPainelHerois(painelHeroisLateral);
+            // Para o timer quando todos da equipe voltaram a estar disponíveis
+            boolean algumDescansando = equipeEnviada.getGrupo().stream()
+                    .anyMatch(h -> !h.verificarDescanso() && !h.verificarVida());
+            if (!algumDescansando) {
+                atualizador.stop();
+                atualizarPainelHerois(painelHeroisLateral); // atualização final
+            }
+        });
+        atualizador.start();
+    }
+
+    public void telaResultados(Cenarios cenario, Equipes equipeEnviada, int dia, JPanel painelHeroisLateral, JFrame telaFase, boolean sucesso) {
+        String mensagemResultado;
+        if (sucesso) {
+            mensagemResultado = "✅ Missão concluída com sucesso!\n\nOs heróis enviados estão descansando e ficarão\nindisponíveis por alguns segundos.";
+        } else {
+            boolean algumMorreu = equipeEnviada.getGrupo().stream().anyMatch(Herois::verificarVida);
+            if (algumMorreu) {
+                mensagemResultado = "❌ A missão falhou!\nMotivo: " + dados.dias.motivoFalha() + "\n\nAlguns heróis morreram!";
+            } else {
+                mensagemResultado = "❌ A missão falhou!\nMotivo: " + dados.dias.motivoFalha();
+            }
+        }
+
         JOptionPane.showMessageDialog(null,
-                "Equipe enviada para: " + cenario.getDescricao() + "\nAguarde o resultado...",
-                "Missão em andamento",
-                JOptionPane.INFORMATION_MESSAGE);
+                "Missão: " + cenario.getDescricao() + "\n\n" + mensagemResultado,
+                sucesso ? "Missão Concluída" : "Missão Falhou",
+                sucesso ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
 
-
+        atualizarPainelHerois(painelHeroisLateral);
         dados.salvar();
     }
 
