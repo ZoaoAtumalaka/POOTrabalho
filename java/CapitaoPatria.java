@@ -5,7 +5,7 @@ class CapitaoPatria extends Herois implements Serializable {
 
     // METODO CONSTRUTOR
     public CapitaoPatria() {
-        super("Capitão Pátria", 4, 4, 1, 4, 15);
+        super("Capitão Pátria", 4, 4, 1, 4, 60);
         this.sanidade = 99;
     }
 

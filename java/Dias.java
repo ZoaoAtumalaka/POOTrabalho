@@ -18,6 +18,7 @@ public class Dias implements Serializable {
             {0, 0, 3}    // dia 2 (fase 3): 4 difíceis
     };
     private int diaAtual;
+    private ArrayList<Herois> heroisQueEvoluiram = new ArrayList<>();
 
     // CONSTRUTOR
     public Dias() {
@@ -73,11 +74,22 @@ public class Dias implements Serializable {
         }
         this.missaoAtual = 0;
     }
+    private ArrayList<Herois> getHeroisQueEvoluiram = new ArrayList<>();
 
-    public void darXp(Equipes equipeEnviada, int xp) {
-        for (int i = 0; i < equipeEnviada.getGrupo().size(); i++) {
-            equipeEnviada.getGrupo().get(i).darXp(xp);
+    public void darXp(Equipes equipes, int xp){
+        heroisQueEvoluiram.clear();
+        for (Herois h : equipes.getGrupo()){
+            int niveis = h.darXp(xp);
+
+            for (int i =0; i < niveis; i++){
+                heroisQueEvoluiram.add(h);
+            }
         }
+
+    }
+
+    public ArrayList<Herois> getHeroisQueEvoluiram(){
+        return heroisQueEvoluiram;
     }
 
     public void executarMissao(Cenarios cenario, Equipes equipeEnviada) throws InterruptedException,EquipeExcesso,MembroDesmaiado,MembroMorto {

@@ -11,6 +11,7 @@ abstract public class Herois implements Acoes, Runnable, Serializable {
     private boolean acordado;
     private boolean morto;
     private int tempoDeDescanso;
+    private int nivel;
 
     // CONSTRUTOR
     public Herois(String nome, int forca, int velocidade, int inteligencia, int defesa, int tempoDeDescanso) {
@@ -21,9 +22,10 @@ abstract public class Herois implements Acoes, Runnable, Serializable {
         this.defesa = defesa;
         this.tempoDeDescanso = tempoDeDescanso;
         this.xp = 0;
-        this.xpProximoNivel = 1000;
+        this.xpProximoNivel = 100;
         this.acordado = true;
         this.morto = false;
+        this.nivel = 1;
     }
 
     // ESPECIAIS
@@ -71,27 +73,28 @@ abstract public class Herois implements Acoes, Runnable, Serializable {
     }
 
     @Override
-    public boolean darXp(int xp) {
+    public int darXp(int xp) {
         this.xp += xp;
-        if (this.xp >= this.xpProximoNivel) {
-            this.xp = 0;
-            this.xpProximoNivel *= 1.1;
-            return true; // subiu de nível
-        } else {
-            return false;
+        int niveisGanhos = 0;
+        while (this.xp >= xpProximoNivel){
+            this.xp -= xpProximoNivel;
+            this.nivel++;
+            this.xpProximoNivel = this.nivel * 100;
+            niveisGanhos++;
         }
+        return niveisGanhos;
     }
 
     @Override
     public void evoluir(String atributo) {
         if (atributo.equals("Forca")) {
-            this.forca *= 1.1;
+            this.forca += 1;
         } else if (atributo.equals("Velocidade")) {
-            this.velocidade *= 1.1;
+            this.velocidade += 1;
         } else if (atributo.equals("Defesa")) {
-            this.defesa *= 1.1;
+            this.defesa += 1;
         } else if (atributo.equals("Inteligencia")) {
-            this.inteligencia *= 1.1;
+            this.inteligencia += 1;
         }
     }
 

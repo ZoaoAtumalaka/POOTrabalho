@@ -5,7 +5,7 @@ public class LuzEstrela extends Herois implements Serializable {
 
     // METODO CONSTRUTOR
     public LuzEstrela() {
-        super("Luz Estrela", 3, 3, 3, 1, 15);
+        super("Luz Estrela", 3, 3, 3, 1, 60);
         this.fotoluminescencia = 100;
     }
 

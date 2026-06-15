@@ -4,7 +4,7 @@ public class TremBala extends Herois implements Serializable {
     private int coracao;
 
     public TremBala ( ){
-        super("Trem Bala",2,5,1,2,15);
+        super("Trem Bala",2,5,1,2,60);
         this.coracao = 100;
     }
 

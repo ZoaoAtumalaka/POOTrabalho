@@ -4,7 +4,7 @@ public class BlackNoir extends Herois implements Serializable {
     private int alucinacao;
 
     public BlackNoir (){
-        super("Black noir", 3,1,1,5,15);
+        super("Black noir", 3,1,1,5,60);
         this.alucinacao = 100;
     }
 

@@ -4,7 +4,7 @@ public class ManaSabia extends Herois implements Serializable {
     private int fadigaMental;
 
     public ManaSabia( ){
-        super("Mana Sabia",1,2,5,2,15);
+        super("Mana Sabia",1,2,5,2,60);
         this.fadigaMental = 0;
     }
 

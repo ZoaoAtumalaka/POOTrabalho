@@ -5,7 +5,7 @@ public class RainhaMaeve extends Herois implements Serializable {
 
     // METODO CONSTRUTOR
     public RainhaMaeve() {
-        super("Rainha Maeve", 5, 1, 2, 2, 15);
+        super("Rainha Maeve", 5, 1, 2, 2, 60);
         this.autoEstima = 100;
     }
 

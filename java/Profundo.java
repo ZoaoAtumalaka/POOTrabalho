@@ -4,7 +4,7 @@ public class Profundo extends Herois implements Serializable {
     private int ansiedade;
 
     public Profundo ( ){
-        super("Profundo",3,3,1,3,15);
+        super("Profundo",3,3,1,3,60);
         this.ansiedade = 0;
     }
 

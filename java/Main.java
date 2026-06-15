@@ -16,7 +16,6 @@ public class Main {
                 + dados.dias.getDivisaoCenarios()[dia][1]
                 + dados.dias.getDivisaoCenarios()[dia][2];
     }
-
     public static void main(String[] args){
         LafManager.install(new DarculaTheme());
         SwingUtilities.invokeLater(() -> {
@@ -706,7 +705,7 @@ public class Main {
     public void telaResultados(Cenarios cenario, Equipes equipeEnviada, int dia, JPanel painelHeroisLateral, JFrame telaFase, boolean sucesso) {
         String mensagemResultado;
         if (sucesso) {
-            mensagemResultado = "✅ Missão concluída com sucesso!\n\nOs heróis enviados estão descansando e ficarão\nindisponíveis por alguns segundos.";
+            mensagemResultado = "✅ Missão concluída com sucesso!\n" + cenario.getXpDado() + " XP\n\nOs heróis enviados estão descansando e ficarão\nindisponíveis por alguns segundos.";
         } else {
             boolean algumMorreu = equipeEnviada.getGrupo().stream().anyMatch(Herois::verificarVida);
             if (algumMorreu) {
@@ -720,6 +719,17 @@ public class Main {
                 "Missão: " + cenario.getDescricao() + "\n\n" + mensagemResultado,
                 sucesso ? "Missão Concluída" : "Missão Falhou",
                 sucesso ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+
+        if (sucesso) {
+            String[] opcoes = {"Forca", "Velocidade", "Inteligencia", "Defesa"};
+            for (Herois h : dados.dias.getHeroisQueEvoluiram()) {
+                int escolha = JOptionPane.showOptionDialog(null,
+                        h.getNome() + " subiu de nível!\nEscolha um atributo:",
+                        "Nível UP!", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
+                h.evoluir(opcoes[escolha]);
+            }
+        }
 
         atualizarPainelHerois(painelHeroisLateral);
         dados.salvar();
