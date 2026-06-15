@@ -59,7 +59,7 @@ public class Dias implements Serializable {
 // CENARIOS DIFÍCEIS
         this.cenariosDificeis.add(new Cenarios("Desarmar ogiva nuclear", 4, 6, 8, 5, 10, 15, 10, 2, 400));
         this.cenariosDificeis.add(new Cenarios("Ajudar Velho Pucrson: O confronto final no .env", 6, 6, 7, 6, 8, 12, 8, 3, 450));
-        this.cenariosDificeis.add(new Cenarios("Derrotar o Bruto louco com composto V", 9, 6, 4, 8, 6, 14, 6, 3, 500)); 
+        this.cenariosDificeis.add(new Cenarios("Derrotar o Bruto louco com composto V", 9, 6, 4, 8, 6, 14, 6, 3, 500));
         this.cenariosDificeis.add(new Cenarios("Impedir guerra entre supers", 8, 8, 8, 8, 12, 20, 12, 4, 600));
         this.cenariosDificeis.add(new Cenarios("Impedir vulcao em erupcao", 9, 5, 5, 9, 15, 18, 15, 2, 500));
     }
@@ -78,6 +78,7 @@ public class Dias implements Serializable {
         if (this.diaAtual < this.divisaoCenarios.length - 1) {
             this.diaAtual++;
         }
+        this.missaoAtual = 0;
     }
 
     public void darXp(Equipes equipeEnviada, int xp) {
@@ -91,7 +92,7 @@ public class Dias implements Serializable {
         if (equipeEnviada.getGrupo().isEmpty()) {
             this.culpadoFalha = 0;
             return;
-            
+
         } else {
             if (cenario.getQuantidadeDeMembros()<equipeEnviada.getGrupo().size()){
                 throw new EquipeExcesso();
@@ -114,39 +115,45 @@ public class Dias implements Serializable {
             double[] resultado = equipeEnviada.executarMissao();
             if (resultado.length == 1) {
                 this.culpadoFalha = (int) resultado[0];
-                equipeEnviada.falha();
+                equipeEnviada.descansarPorCodigo(this.culpadoFalha);
             } else {
-                // MÉDIA DOS ATRIBUTOS DO CENÁRIO
+                // MÉDIA DOS ATRIBUTOS DO CENÁRIO (só atributos exigidos, ou seja, > 0)
+                double[] atributos = cenario.getAtributos();
                 int somaAtributosC = 0;
                 int quantidadeAtributosC = 0;
-                double[] atributos = cenario.getAtributos();
                 for (int i = 0; i < atributos.length; i++) {
-                    if (atributos[i] != 0) {
+                    if (atributos[i] > 0) {
                         somaAtributosC += atributos[i];
-                        quantidadeAtributosC += 1;
+                        quantidadeAtributosC++;
                     }
                 }
 
                 double mediaAtributosC = (quantidadeAtributosC > 0) ? (double) somaAtributosC / quantidadeAtributosC : 0;
 
-                // MÉDIA DOS ATRIBUTOS DOS HERÓIS
-                int somaAtributosH = 0;
+                // MÉDIA DOS ATRIBUTOS DOS HERÓIS — usando APENAS os índices que a missão exige
+                // Índices: 0=velocidade, 1=inteligencia, 2=defesa, 3=forca (ordem de executarMissao em Herois)
+                // Cenário:  0=forca,      1=velocidade,   2=inteligencia, 3=defesa (ordem de getAtributos em Cenarios)
+                // Mapeamento: cenario[0](forca) -> heroi[3], cenario[1](vel) -> heroi[0], cenario[2](int) -> heroi[1], cenario[3](def) -> heroi[2]
+                int[] mapCenarioParaHeroi = {3, 0, 1, 2};
+
+                double somaAtributosH = 0;
                 int quantidadeAtributosH = 0;
-                for (int i = 0; i < resultado.length; i++) {
-                    if (resultado[i] != 0) {
-                        somaAtributosH += resultado[i];
-                        quantidadeAtributosH += 1;
+                for (int i = 0; i < atributos.length; i++) {
+                    if (atributos[i] > 0) {
+                        somaAtributosH += resultado[mapCenarioParaHeroi[i]];
+                        quantidadeAtributosH++;
                     }
                 }
 
-                double mediaAtributosH = (quantidadeAtributosH > 0) ? (double) somaAtributosH / quantidadeAtributosH : 0;
+                double mediaAtributosH = (quantidadeAtributosH > 0) ? somaAtributosH / quantidadeAtributosH : 0;
 
                 Random random = new Random();
                 double numRandom = random.nextDouble() * mediaAtributosC;
 
-                if (numRandom >= mediaAtributosH && numRandom <= mediaAtributosC) {
+                if (mediaAtributosH >= numRandom) {
                     System.out.println("A Missão foi concluída com Sucesso!");
                     darXp(equipeEnviada, cenario.getXpDado());
+                    this.culpadoFalha = -1; // -1 = sucesso, sem culpado
                 } else {
                     equipeEnviada.falha();
                     this.culpadoFalha = 9;
@@ -181,8 +188,13 @@ public class Dias implements Serializable {
         return cenariosFaceis.get(random.nextInt(cenariosFaceis.size()));
     }
 
+    public int getCulpadoFalha() {
+        return culpadoFalha;
+    }
+
     public String motivoFalha() {
         switch (culpadoFalha) {
+            case -1: return "Missão concluída com sucesso";
             case 0: return "Falta de herois";
             case 1: return "Capitão Pátria falhou";
             case 2: return "Luz Estrela falhou";
@@ -207,17 +219,14 @@ public class Dias implements Serializable {
         return diaAtual;
     }
 
-    // chama isso ao começar cada fase/dia (no início de fase(int dia))
     public void resetarMissaoAtual() {
         this.missaoAtual = 0;
     }
 
-    // incrementa após cada missão ser aceita (no botão ATENDER do popup)
     public void avancarMissao() {
         this.missaoAtual++;
     }
 
-    // fase() usa isso pra saber quando o dia acabou
     public int totalMissoesDoDia() {
         return divisaoCenarios[diaAtual][0]
                 + divisaoCenarios[diaAtual][1]

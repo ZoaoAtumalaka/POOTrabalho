@@ -66,5 +66,18 @@ public class Cenarios implements Serializable {
     public int getTempoDeVolta(){ return this.tempoDeVolta; };
     public int getQuantidadeDeMembros(){return this.quantidadeMembros;}
 
-}
+    public String getAtributosNecessarios(){
+        String[] nomes = {"Força", "Velocidade", "Inteligência", "Defesa"};
+        double[] valores = this.getAtributos();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < valores.length; i++) {
+            if (valores[i] != 0) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(nomes[i]).append(": ").append(String.format("%.1f", valores[i]));
+            }
+        }
+        if (sb.length() == 0) sb.append("Nenhum atributo específico");
+        return sb.toString();
+    }
 
+}
