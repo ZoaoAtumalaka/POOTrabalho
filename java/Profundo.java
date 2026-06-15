@@ -1,4 +1,6 @@
-public class Profundo extends Herois{
+import java.io.Serializable;
+
+public class Profundo extends Herois implements Serializable {
     private int ansiedade;
 
     public Profundo ( ){

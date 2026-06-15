@@ -1,4 +1,6 @@
-public class RainhaMaeve extends Herois {
+import java.io.Serializable;
+
+public class RainhaMaeve extends Herois implements Serializable {
     private int autoEstima;
 
     // METODO CONSTRUTOR

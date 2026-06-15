@@ -1,4 +1,6 @@
-public class ManaSabia extends Herois{
+import java.io.Serializable;
+
+public class ManaSabia extends Herois implements Serializable {
     private int fadigaMental;
 
     public ManaSabia( ){

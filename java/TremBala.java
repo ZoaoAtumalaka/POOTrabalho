@@ -1,4 +1,6 @@
-public class TremBala extends Herois{
+import java.io.Serializable;
+
+public class TremBala extends Herois implements Serializable {
     private int coracao;
 
     public TremBala ( ){

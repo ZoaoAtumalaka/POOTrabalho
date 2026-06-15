@@ -1,4 +1,6 @@
-public class BlackNoir extends Herois {
+import java.io.Serializable;
+
+public class BlackNoir extends Herois implements Serializable {
     private int alucinacao;
 
     public BlackNoir (){

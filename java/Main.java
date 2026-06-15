@@ -400,6 +400,7 @@ public class Main {
             } else {
                 Equipes equipeEnviada = new Equipes(selecionados.toArray(new Herois[0]));
                 try {
+                    timer.stop();
                     dados.dias.executarMissao(cenario, equipeEnviada);
                 }catch (MembroMorto es){
                     JOptionPane.showMessageDialog(null, es.getMessage());
@@ -413,10 +414,10 @@ public class Main {
                 }catch (InterruptedException es){
                     System.out.println(es.getMessage());
                     System.out.println("Erro de continuação");
+
                     return;
                 }
                 telaResultados(cenario, equipeEnviada, dia);
-                timer.stop();
             }
         });
 

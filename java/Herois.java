@@ -1,4 +1,6 @@
-abstract public class Herois implements Acoes, Runnable, java.io.Serializable {
+import java.io.Serializable;
+
+abstract public class Herois implements Acoes, Runnable, Serializable {
     private String nome;
     private double forca;
     private double velocidade;

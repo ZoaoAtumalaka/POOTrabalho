@@ -9,7 +9,8 @@ public class Dados implements Serializable {
     public Profundo profundo;
     public RainhaMaeve rainhaMaeve;
     public Dias dias;
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     public Dados(){
         this.capitaoPatria = new CapitaoPatria();
         this.luzEstrela = new LuzEstrela();
@@ -26,6 +27,7 @@ public class Dados implements Serializable {
             persistir();
         }catch (IOException e){
             System.out.println("Erro ao salvar o jogo.");
+            e.printStackTrace();
         }
     }
 

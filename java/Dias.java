@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Dias {
+public class Dias implements Serializable {
     // DIAS = fases
 
     private ArrayList<Cenarios> cenariosFaceis;

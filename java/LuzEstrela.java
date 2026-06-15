@@ -1,4 +1,6 @@
-public class LuzEstrela extends Herois {
+import java.io.Serializable;
+
+public class LuzEstrela extends Herois implements Serializable {
     private int fotoluminescencia;
 
     // METODO CONSTRUTOR

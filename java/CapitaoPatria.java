@@ -1,4 +1,6 @@
-class CapitaoPatria extends Herois {
+import java.io.Serializable;
+
+class CapitaoPatria extends Herois implements Serializable {
     private int sanidade;
 
     // METODO CONSTRUTOR
